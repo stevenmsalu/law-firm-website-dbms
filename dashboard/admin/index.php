@@ -1,42 +1,60 @@
 <?php
-// dashboard/admin/index.php
-session_start();
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header('Location: /law-firm-website-dbms/auth/login.php');
-    exit;
-}
+declare(strict_types=1);
 
-// Check if user is admin
-if ($_SESSION['role'] !== 'admin') {
-    header('Location: /law-firm-website-dbms/auth/login.php');
-    exit;
-}
+require __DIR__ . '/../../auth/role_check.php';
+require_role('admin');
+require __DIR__ . '/../../includes/db.php';
 
-// If we get here, user is authenticated as admin
+$userCount = (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
+$caseCount = (int) $pdo->query('SELECT COUNT(*) FROM cases')->fetchColumn();
+
+$pageTitle = 'Admin Dashboard | Lex & Partners';
+$assetPathPrefix = '../../';
+$publicPathPrefix = '../../public/';
+$authPathPrefix = '../../auth/';
+
+include '../../includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Law Firm Management</title>
-    <link rel="stylesheet" href="/law-firm-website-dbms/assets/css/style.css">
-</head>
-<body>
-<div style="padding: 20px;">
-    <h1>Admin Dashboard</h1>
-    <p>Welcome, <?php echo htmlspecialchars($_SESSION['name'] ?? 'Admin', ENT_QUOTES, 'UTF-8'); ?>!</p>
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome back, <?php echo htmlspecialchars((string) ($_SESSION['name'] ?? 'Admin'), ENT_QUOTES, 'UTF-8'); ?>.</p>
+    </div>
+  </section>
 
-    <h2>Admin Menu</h2>
-    <ul>
-        <li><a href="/law-firm-website-dbms/dashboard/admin/create_user.php">Create User</a></li>
-        <li><a href="/law-firm-website-dbms/dashboard/admin/create_case.php">Create Case</a></li>
-        <li><a href="/law-firm-website-dbms/dashboard/admin/manage_cases.php">Manage Cases</a></li>
-    </ul>
+  <section class="section">
+    <div class="container">
+      <div class="admin-grid">
+        <article class="admin-stat">
+          <span class="admin-stat-label">Total Users</span>
+          <span class="admin-stat-value"><?php echo $userCount; ?></span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat-label">Total Cases</span>
+          <span class="admin-stat-value"><?php echo $caseCount; ?></span>
+        </article>
+        <article class="admin-stat">
+          <span class="admin-stat-label">Signed In As</span>
+          <span class="admin-stat-value"><?php echo htmlspecialchars((string) ($_SESSION['role'] ?? 'admin'), ENT_QUOTES, 'UTF-8'); ?></span>
+        </article>
+      </div>
 
-    <p><a href="/law-firm-website-dbms/auth/logout.php">Logout</a></p>
-</div>
-</body>
-</html>
+      <section class="section">
+        <div class="highlight-panel">
+          <h2>Admin Actions</h2>
+          <p>Manage users and case assignments from one place while keeping the public site styling consistent.</p>
+          <div class="admin-actions">
+            <a class="btn" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/create_user.php">Create User</a>
+            <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/create_case.php">Create Case</a>
+            <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/manage_cases.php">Manage Cases</a>
+            <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/auth/logout.php">Logout</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+</main>
+
+<?php include '../../includes/footer.php'; ?>
