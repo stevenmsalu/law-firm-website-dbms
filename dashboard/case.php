@@ -8,6 +8,9 @@ require __DIR__ . '/../includes/db.php';
 
 $successMessage = '';
 $errorMessage = '';
+$allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
+$maxFileSize = 5 * 1024 * 1024;
+$uploadDirectory = dirname(__DIR__) . '/uploads/';
 $caseId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if ($caseId === false || $caseId === null) {
@@ -49,20 +52,62 @@ if ($userId !== (int) $case['client_id'] && $userId !== (int) $case['lawyer_id']
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postedCaseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
     $messageBody = trim((string) ($_POST['message'] ?? ''));
+    $filePath = null;
+    $hasAttachment = isset($_FILES['attachment']) && is_array($_FILES['attachment']);
 
     if ($postedCaseId === false || $postedCaseId === null || $postedCaseId !== (int) $case['id']) {
         $errorMessage = 'Invalid message request.';
-    } elseif ($messageBody === '') {
-        $errorMessage = 'Message cannot be empty.';
-    } else {
+    } elseif ($hasAttachment && $_FILES['attachment']['error'] !== UPLOAD_ERR_NO_FILE) {
+        $uploadedFile = $_FILES['attachment'];
+        $originalName = (string) ($uploadedFile['name'] ?? '');
+        $temporaryPath = (string) ($uploadedFile['tmp_name'] ?? '');
+        $fileSize = (int) ($uploadedFile['size'] ?? 0);
+        $uploadError = (int) ($uploadedFile['error'] ?? UPLOAD_ERR_NO_FILE);
+        $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+
+        if ($uploadError !== UPLOAD_ERR_OK) {
+            $errorMessage = 'Attachment upload failed.';
+        } elseif ($originalName === '' || $temporaryPath === '') {
+            $errorMessage = 'Invalid attachment upload.';
+        } elseif ($fileSize <= 0 || $fileSize > $maxFileSize) {
+            $errorMessage = 'Attachment must be smaller than 5MB.';
+        } elseif (!in_array($extension, $allowedExtensions, true)) {
+            $errorMessage = 'Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed.';
+        } else {
+            if (!is_dir($uploadDirectory)) {
+                mkdir($uploadDirectory, 0775, true);
+            }
+
+            if (!is_writable($uploadDirectory)) {
+                $errorMessage = 'Upload directory is not writable.';
+            } else {
+                $safeBaseName = preg_replace('/[^A-Za-z0-9._-]/', '_', basename($originalName));
+                $storedFileName = time() . '_' . $safeBaseName;
+                $destinationPath = $uploadDirectory . $storedFileName;
+
+                if (!move_uploaded_file($temporaryPath, $destinationPath)) {
+                    $errorMessage = 'Failed to store the attachment.';
+                } else {
+                    $filePath = 'uploads/' . $storedFileName;
+                }
+            }
+        }
+    }
+
+    if ($errorMessage === '' && $messageBody === '' && $filePath === null) {
+        $errorMessage = 'Add a message or choose a file before sending.';
+    }
+
+    if ($errorMessage === '') {
         $insertStmt = $pdo->prepare(
-            'INSERT INTO messages (case_id, sender_id, message)
-             VALUES (:case_id, :sender_id, :message)'
+            'INSERT INTO messages (case_id, sender_id, message, file_path)
+             VALUES (:case_id, :sender_id, :message, :file_path)'
         );
         $insertStmt->execute([
             'case_id' => (int) $case['id'],
             'sender_id' => $userId,
             'message' => $messageBody,
+            'file_path' => $filePath,
         ]);
 
         header('Location: ' . APP_BASE_PATH . '/dashboard/case.php?id=' . (int) $case['id'] . '&sent=1');
@@ -78,6 +123,7 @@ $messageStmt = $pdo->prepare(
     "SELECT
         messages.id,
         messages.message,
+        messages.file_path,
         messages.created_at,
         messages.sender_id,
         users.name
@@ -159,17 +205,31 @@ include '../includes/header.php';
                   <strong><?php echo htmlspecialchars($message['name'], ENT_QUOTES, 'UTF-8'); ?></strong>
                   <span><?php echo htmlspecialchars(date('M d, Y g:i A', strtotime((string) $message['created_at'])), ENT_QUOTES, 'UTF-8'); ?></span>
                 </div>
-                <p><?php echo nl2br(htmlspecialchars((string) $message['message'], ENT_QUOTES, 'UTF-8')); ?></p>
+                <?php if ((string) $message['message'] !== ''): ?>
+                  <p><?php echo nl2br(htmlspecialchars((string) $message['message'], ENT_QUOTES, 'UTF-8')); ?></p>
+                <?php endif; ?>
+                <?php if (!empty($message['file_path'])): ?>
+                  <?php $attachmentName = basename((string) $message['file_path']); ?>
+                  <p class="message-attachment">
+                    <a class="card-link" href="<?php echo APP_BASE_PATH . '/' . htmlspecialchars((string) $message['file_path'], ENT_QUOTES, 'UTF-8'); ?>" target="_blank" rel="noopener noreferrer">
+                      <?php echo htmlspecialchars('Attachment: ' . $attachmentName, ENT_QUOTES, 'UTF-8'); ?>
+                    </a>
+                  </p>
+                <?php endif; ?>
               </article>
             <?php endforeach; ?>
           </div>
         <?php endif; ?>
 
-        <form method="post" action="">
+        <form method="post" action="" enctype="multipart/form-data">
           <input type="hidden" name="case_id" value="<?php echo (int) $case['id']; ?>" />
           <div class="form-group">
-            <label for="message">Send a Message<span class="required">*</span></label>
-            <textarea id="message" name="message" rows="5" required></textarea>
+            <label for="message">Send a Message</label>
+            <textarea id="message" name="message" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="attachment">Attachment</label>
+            <input type="file" id="attachment" name="attachment" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
           </div>
           <div class="admin-actions">
             <button type="submit" class="btn">Send Message</button>
