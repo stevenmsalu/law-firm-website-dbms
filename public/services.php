@@ -1,41 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lex &amp; Partners Law Firm | Services</title>
-    <link rel="stylesheet" href="../css/style.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a href="index.html" class="logo">
-          <span class="logo-mark">L&amp;P</span>
-          <span class="logo-text">
-            Lex &amp; Partners
-            <span class="logo-subtitle">Attorneys at Law</span>
-          </span>
-        </a>
+<?php
+$pageTitle = 'Lex & Partners Law Firm | Services';
+$activePage = 'services';
+include '../includes/header.php';
+?>
 
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="nav-toggle-line"></span>
-          <span class="nav-toggle-line"></span>
-          <span class="nav-toggle-line"></span>
-        </button>
-
-        <nav class="site-nav" aria-label="Main navigation">
-          <ul>
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html" class="active">Services</a></li>
-            <li><a href="lawyers.html">Lawyers</a></li>
-            <li><a href="contact.html" class="btn btn-small">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-    <main>
+<main>
       <section class="page-hero">
         <div class="container">
           <h1>Our Legal Services</h1>
@@ -112,48 +81,14 @@
               Schedule a consultation to discuss how we can support your specific
               situation.
             </p>
-            <a href="contact.html" class="btn btn-full">Request a Consultation</a>
+            <a href="contact.php" class="btn btn-full">Request a Consultation</a>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <span class="logo-mark">L&amp;P</span>
-          <span class="footer-text">Lex &amp; Partners Law Firm</span>
-        </div>
-        <div class="footer-columns">
-          <div>
-            <h4>Office</h4>
-            <p>
-              1200 Justice Avenue<br />
-              Suite 400<br />
-              New York, NY 10001
-            </p>
-          </div>
-          <div>
-            <h4>Contact</h4>
-            <p>
-              Phone: (212) 555-0199<br />
-              Email: info@lexpartners.com
-            </p>
-          </div>
-          <div>
-            <h4>Hours</h4>
-            <p>
-              Monday–Friday: 9:00–18:00<br />
-              Emergency support 24/7
-            </p>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; <span id="year"></span> Lex &amp; Partners. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
+<?php include '../includes/footer.php'; ?>
 
-    <script src="../js/script.js"></script>
-  </body>
-  </html>
+
+
+
