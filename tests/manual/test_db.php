@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$pdo = require __DIR__ . '/../config/database.php';
+$pdo = require __DIR__ . '/../../config/database.php';
 
 try {
     $stmt = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER BY id ASC');
@@ -42,3 +42,4 @@ try {
     <?php endif; ?>
 </body>
 </html>
+

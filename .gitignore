@@ -1,0 +1,6 @@
+# Logs
+/storage/logs/*.log
+!/storage/logs/.gitkeep
+
+# IDE
+/.idea/
