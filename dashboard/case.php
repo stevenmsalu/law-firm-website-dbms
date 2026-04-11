@@ -6,6 +6,8 @@ require __DIR__ . '/../auth/role_check.php';
 require_any_role(['client', 'lawyer']);
 require __DIR__ . '/../includes/db.php';
 
+$successMessage = '';
+$errorMessage = '';
 $caseId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
 if ($caseId === false || $caseId === null) {
@@ -43,6 +45,49 @@ if ($userId !== (int) $case['client_id'] && $userId !== (int) $case['lawyer_id']
     http_response_code(403);
     exit('Access denied');
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $postedCaseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
+    $messageBody = trim((string) ($_POST['message'] ?? ''));
+
+    if ($postedCaseId === false || $postedCaseId === null || $postedCaseId !== (int) $case['id']) {
+        $errorMessage = 'Invalid message request.';
+    } elseif ($messageBody === '') {
+        $errorMessage = 'Message cannot be empty.';
+    } else {
+        $insertStmt = $pdo->prepare(
+            'INSERT INTO messages (case_id, sender_id, message)
+             VALUES (:case_id, :sender_id, :message)'
+        );
+        $insertStmt->execute([
+            'case_id' => (int) $case['id'],
+            'sender_id' => $userId,
+            'message' => $messageBody,
+        ]);
+
+        header('Location: ' . APP_BASE_PATH . '/dashboard/case.php?id=' . (int) $case['id'] . '&sent=1');
+        exit;
+    }
+}
+
+if (isset($_GET['sent']) && $_GET['sent'] === '1') {
+    $successMessage = 'Message sent successfully.';
+}
+
+$messageStmt = $pdo->prepare(
+    "SELECT
+        messages.id,
+        messages.message,
+        messages.created_at,
+        messages.sender_id,
+        users.name
+     FROM messages
+     JOIN users ON users.id = messages.sender_id
+     WHERE messages.case_id = :case_id
+     ORDER BY messages.created_at ASC"
+);
+$messageStmt->execute(['case_id' => (int) $case['id']]);
+$messages = $messageStmt->fetchAll();
 
 $pageTitle = 'Case Details | Lex & Partners';
 $assetPathPrefix = '../';
@@ -83,6 +128,53 @@ include '../includes/header.php';
             <?php endif; ?>
           </div>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card">
+        <div class="section-header align-left">
+          <h2>Case Messages</h2>
+          <p>Clients and assigned lawyers can exchange updates directly within this case.</p>
+        </div>
+
+        <?php if ($successMessage !== ''): ?>
+          <p class="form-success"><?php echo htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php endif; ?>
+
+        <?php if ($errorMessage !== ''): ?>
+          <p class="form-error"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php endif; ?>
+
+        <?php if (empty($messages)): ?>
+          <div class="empty-state">No messages yet. Start the conversation below.</div>
+        <?php else: ?>
+          <div class="message-thread">
+            <?php foreach ($messages as $message): ?>
+              <?php $isCurrentUser = (int) $message['sender_id'] === $userId; ?>
+              <article class="message-bubble<?php echo $isCurrentUser ? ' is-own' : ''; ?>">
+                <div class="message-meta">
+                  <strong><?php echo htmlspecialchars($message['name'], ENT_QUOTES, 'UTF-8'); ?></strong>
+                  <span><?php echo htmlspecialchars(date('M d, Y g:i A', strtotime((string) $message['created_at'])), ENT_QUOTES, 'UTF-8'); ?></span>
+                </div>
+                <p><?php echo nl2br(htmlspecialchars((string) $message['message'], ENT_QUOTES, 'UTF-8')); ?></p>
+              </article>
+            <?php endforeach; ?>
+          </div>
+        <?php endif; ?>
+
+        <form method="post" action="">
+          <input type="hidden" name="case_id" value="<?php echo (int) $case['id']; ?>" />
+          <div class="form-group">
+            <label for="message">Send a Message<span class="required">*</span></label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          <div class="admin-actions">
+            <button type="submit" class="btn">Send Message</button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
