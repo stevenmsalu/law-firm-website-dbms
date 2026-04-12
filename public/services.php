@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Lex & Partners Law Firm | Services';
+$pageTitle = 'Zimba & Partners | Services';
 $activePage = 'services';
 include '../includes/header.php';
 ?>

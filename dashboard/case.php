@@ -135,7 +135,7 @@ $messageStmt = $pdo->prepare(
 $messageStmt->execute(['case_id' => (int) $case['id']]);
 $messages = $messageStmt->fetchAll();
 
-$pageTitle = 'Case Details | Lex & Partners';
+$pageTitle = 'Case Details | Zimba & Partners';
 $assetPathPrefix = '../';
 $publicPathPrefix = '../public/';
 $authPathPrefix = '../auth/';

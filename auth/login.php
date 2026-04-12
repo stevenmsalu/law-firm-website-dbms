@@ -68,24 +68,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$pageTitle = 'Login | Lex & Partners';
+$pageTitle = 'Login | Zimba & Partners';
 $assetPathPrefix = '../';
 $publicPathPrefix = '../public/';
 $authPathPrefix = '';
 
 include '../includes/header.php';
 ?>
-<main>
-  <section class="page-hero">
-    <div class="container">
-      <h1>Client and Staff Login</h1>
-      <p>Access your case information, assignments, and dashboard using your account credentials.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="card admin-form-card">
+<main class="login-main">
+  <section class="login-section">
+    <div class="container login-container">
+      <div class="card admin-form-card login-card">
         <h2>Sign In</h2>
         <p>Use the email address and password assigned to your account.</p>
 

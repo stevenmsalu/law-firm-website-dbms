@@ -14,6 +14,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // User dropdown toggle functionality
+  const userMenuBtn = document.querySelector('.user-menu-btn');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+
+  if (userMenuBtn && dropdownMenu) {
+    userMenuBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const isExpanded = userMenuBtn.getAttribute('aria-expanded') === 'true';
+      userMenuBtn.setAttribute('aria-expanded', !isExpanded);
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        userMenuBtn.setAttribute('aria-expanded', 'false');
+        dropdownMenu.classList.remove('show');
+      }
+    });
+
+    // Close dropdown on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && dropdownMenu.classList.contains('show')) {
+        userMenuBtn.setAttribute('aria-expanded', 'false');
+        dropdownMenu.classList.remove('show');
+      }
+    });
+  }
+
   const contactForm = document.getElementById("contact-form");
   if (!contactForm) return;
 
@@ -116,4 +146,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-

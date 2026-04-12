@@ -6,7 +6,7 @@ require __DIR__ . '/../../auth/role_check.php';
 require_role('admin');
 require __DIR__ . '/../../includes/db.php';
 
-$pageTitle = 'Manage Cases | Lex & Partners';
+$pageTitle = 'Manage Cases | Zimba & Partners';
 $assetPathPrefix = '../../';
 $publicPathPrefix = '../../public/';
 $authPathPrefix = '../../auth/';

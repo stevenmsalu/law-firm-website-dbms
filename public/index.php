@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Lex & Partners Law Firm | Home';
+$pageTitle = 'Zimba & Partners | Home';
 $activePage = 'home';
 $htmlClass = 'home-snap';
 include '../includes/header.php';
@@ -11,7 +11,7 @@ include '../includes/header.php';
           <div class="hero-content">
             <h1>Trusted Legal Counsel for Modern Businesses &amp; Families</h1>
             <p>
-              At Lex &amp; Partners, we combine deep legal expertise with
+              At Zimba &amp; Partners, we combine deep legal expertise with
               practical business insight to protect what matters most to you.
             </p>
             <div class="hero-actions">
@@ -85,38 +85,46 @@ include '../includes/header.php';
         </div>
       </section>
 
-      <section class="section section-alt final-block">
-        <div class="container two-column">
-          <div>
-            <header class="section-header align-left">
-              <h2>Why Clients Choose Lex &amp; Partners</h2>
-            </header>
-            <ul class="checklist">
-              <li>Client-first, relationship-driven approach</li>
-              <li>Clear, transparent communication at every stage</li>
-              <li>Business-minded strategies, not just legal theory</li>
-              <li>Discreet handling of sensitive matters</li>
-            </ul>
+      <div class="home-snap-pane home-snap-pane--last">
+        <section class="section section-alt final-block">
+          <div class="container two-column">
+            <div>
+              <header class="section-header align-left">
+                <h2>Why Clients Choose Zimba &amp; Partners</h2>
+              </header>
+              <ul class="checklist">
+                <li>Client-first, relationship-driven approach</li>
+                <li>Clear, transparent communication at every stage</li>
+                <li>Business-minded strategies, not just legal theory</li>
+                <li>Discreet handling of sensitive matters</li>
+              </ul>
+            </div>
+            <div class="stats-panel">
+              <div>
+                <span class="stat-number">98%</span>
+                <span class="stat-label">Client satisfaction</span>
+              </div>
+              <div>
+                <span class="stat-number">3</span>
+                <span class="stat-label">Countries served</span>
+              </div>
+              <div>
+                <span class="stat-number">24h</span>
+                <span class="stat-label">Average response time</span>
+              </div>
+            </div>
           </div>
-          <div class="stats-panel">
-            <div>
-              <span class="stat-number">98%</span>
-              <span class="stat-label">Client satisfaction</span>
-            </div>
-            <div>
-              <span class="stat-number">3</span>
-              <span class="stat-label">Continents served</span>
-            </div>
-            <div>
-              <span class="stat-number">24h</span>
-              <span class="stat-label">Average response time</span>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+
+        <?php include __DIR__ . '/../includes/footer_body.php'; ?>
+      </div>
     </main>
 
-<?php include '../includes/footer.php'; ?>
+<?php
+$skipFooterBody = true;
+include '../includes/footer.php';
+unset($skipFooterBody);
+?>
 
 
 

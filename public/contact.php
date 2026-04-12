@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Lex & Partners Law Firm | Contact';
+$pageTitle = 'Zimba & Partners | Contact';
 $activePage = 'contact';
 include '../includes/header.php';
 ?>
@@ -22,12 +22,13 @@ include '../includes/header.php';
             </p>
             <p>
               <strong>Office Address</strong><br />
-              1200 Justice Avenue, Suite 400<br />
-              New York, NY 10001
+              22 Independence Avenue<br />
+              Lusaka Central Business District<br />
+              Lusaka, Zambia 10101
             </p>
             <p>
-              <strong>Phone</strong>: (212) 555-0199<br />
-              <strong>Email</strong>: info@lexpartners.com
+              <strong>Phone</strong>: +260 211 123456<br />
+              <strong>Email</strong>: info@zimbapatners.co.zm
             </p>
           </div>
 

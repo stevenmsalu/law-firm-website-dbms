@@ -6,7 +6,7 @@ require __DIR__ . '/../auth/role_check.php';
 require_role('client');
 require __DIR__ . '/../includes/db.php';
 
-$pageTitle = 'Client Dashboard | Lex & Partners';
+$pageTitle = 'Client Dashboard | Zimba & Partners';
 $assetPathPrefix = '../';
 $publicPathPrefix = '../public/';
 $authPathPrefix = '../auth/';

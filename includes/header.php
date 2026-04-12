@@ -1,6 +1,6 @@
 <?php
 if (!isset($pageTitle)) {
-    $pageTitle = 'Lex & Partners Law Firm';
+    $pageTitle = 'Zimba & Partners';
 }
 if (!isset($activePage)) {
     $activePage = '';
@@ -20,6 +20,11 @@ if (!isset($authPathPrefix)) {
 
 $cssFile = dirname(__DIR__) . '/assets/css/style.css';
 $cssVersion = file_exists($cssFile) ? (string) filemtime($cssFile) : '1';
+
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en"<?php echo $htmlClass !== '' ? ' class="' . htmlspecialchars($htmlClass, ENT_QUOTES, 'UTF-8') . '"' : ''; ?>>
@@ -33,9 +38,9 @@ $cssVersion = file_exists($cssFile) ? (string) filemtime($cssFile) : '1';
     <header class="site-header">
       <div class="container header-inner">
         <a href="<?php echo htmlspecialchars($publicPathPrefix, ENT_QUOTES, 'UTF-8'); ?>index.php" class="logo">
-          <span class="logo-mark">L&amp;P</span>
+          <span class="logo-mark">Z&amp;P</span>
           <span class="logo-text">
-            Lex &amp; Partners
+            Zimba &amp; Partners
             <span class="logo-subtitle">Attorneys at Law</span>
           </span>
         </a>
@@ -53,9 +58,45 @@ $cssVersion = file_exists($cssFile) ? (string) filemtime($cssFile) : '1';
             <li><a href="<?php echo htmlspecialchars($publicPathPrefix, ENT_QUOTES, 'UTF-8'); ?>services.php" class="<?php echo $activePage === 'services' ? 'active' : ''; ?>">Services</a></li>
             <li><a href="<?php echo htmlspecialchars($publicPathPrefix, ENT_QUOTES, 'UTF-8'); ?>lawyers.php" class="<?php echo $activePage === 'lawyers' ? 'active' : ''; ?>">Lawyers</a></li>
             <li><a href="<?php echo htmlspecialchars($publicPathPrefix, ENT_QUOTES, 'UTF-8'); ?>contact.php" class="<?php echo $activePage === 'contact' ? 'active' : ''; ?>">Contact</a></li>
-            <li><a href="<?php echo htmlspecialchars($authPathPrefix, ENT_QUOTES, 'UTF-8'); ?>login.php" class="btn btn-small">Members Only</a></li>
+            <?php if (!empty($_SESSION['user_id']) && !empty($_SESSION['name'])): ?>
+              <!-- User is logged in - show user menu -->
+              <li class="user-menu">
+                <div class="user-dropdown">
+                  <button class="btn btn-small user-menu-btn" aria-expanded="false">
+                    <?php 
+                    $userName = $_SESSION['name'];
+                    $firstName = explode(' ', $userName)[0];
+                    echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); 
+                    ?>
+                    <span class="dropdown-arrow">▼</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a href="<?php 
+                      // Determine dashboard link based on role
+                      $dashboardLink = '';
+                      if ($_SESSION['role'] === 'admin') {
+                        $dashboardLink = $assetPathPrefix . 'dashboard/admin/index.php';
+                      } elseif ($_SESSION['role'] === 'lawyer') {
+                        $dashboardLink = $assetPathPrefix . 'dashboard/lawyer.php';
+                      } elseif ($_SESSION['role'] === 'client') {
+                        $dashboardLink = $assetPathPrefix . 'dashboard/client.php';
+                      }
+                      echo htmlspecialchars($dashboardLink, ENT_QUOTES, 'UTF-8');
+                    ?>">Dashboard</a></li>
+                    <li><a href="<?php echo htmlspecialchars($authPathPrefix, ENT_QUOTES, 'UTF-8'); ?>logout.php">Logout</a></li>
+                  </ul>
+                </div>
+              </li>
+            <?php else: ?>
+              <!-- User is not logged in - show login button -->
+              <li>
+                <a href="<?php echo htmlspecialchars($authPathPrefix, ENT_QUOTES, 'UTF-8'); ?>login.php" 
+                  class="btn btn-small members-link">
+                  Members Only
+                </a>
+              </li>
+            <?php endif; ?>
           </ul>
         </nav>
       </div>
     </header>
-

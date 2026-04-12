@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Lex & Partners Law Firm | Our Lawyers';
+$pageTitle = 'Zimba & Partners | Our Lawyers';
 $activePage = 'lawyers';
 include '../includes/header.php';
 ?>
@@ -20,37 +20,39 @@ include '../includes/header.php';
 
           <div class="card-grid three">
             <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">JM</div>
-              <h3>Jane Mitchell</h3>
+              <div class="lawyer-avatar placeholder-avatar">MK</div>
+              <h3>Mwansa Kabwe</h3>
               <p class="lawyer-role">Managing Partner &amp; Corporate Counsel</p>
               <p>
-                Jane advises multinational corporations and high-growth startups on
-                corporate governance, complex transactions, and regulatory
-                compliance.
+                Mwansa advises Zambian and regional companies on corporate
+                governance, complex transactions, and regulatory compliance under
+                Zambian law.
               </p>
-              <p class="lawyer-meta">Bar Admissions: New York, California</p>
+              <p class="lawyer-meta">Bar Admissions: High Court of Zambia; Law Association of Zambia</p>
             </article>
 
             <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">AR</div>
-              <h3>Alex Rivera</h3>
+              <div class="lawyer-avatar placeholder-avatar">MC</div>
+              <h3>Mutale Chileshe</h3>
               <p class="lawyer-role">Head of Litigation</p>
               <p>
-                Alex represents clients in high-stakes commercial disputes, with a
-                focus on contract, shareholder, and cross-border matters.
+                Mutale represents clients in high-stakes commercial disputes before
+                the High Court of Zambia, with a focus on contracts, shareholder
+                matters, and arbitration.
               </p>
-              <p class="lawyer-meta">Recognized in: Chambers &amp; Partners</p>
+              <p class="lawyer-meta">Member: Law Association of Zambia</p>
             </article>
 
             <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">SL</div>
-              <h3>Sophia Lang</h3>
+              <div class="lawyer-avatar placeholder-avatar">BN</div>
+              <h3>Bwalya Namukolo</h3>
               <p class="lawyer-role">Partner, Family &amp; Estate</p>
               <p>
-                Sophia provides discreet, compassionate counsel to individuals and
-                families on divorce, custody, and estate planning.
+                Bwalya provides discreet, compassionate counsel to individuals and
+                families on divorce, custody, wills, and estate administration
+                across Zambia.
               </p>
-              <p class="lawyer-meta">Certified Specialist in Family Law</p>
+              <p class="lawyer-meta">Admitted: High Court of Zambia</p>
             </article>
           </div>
         </div>

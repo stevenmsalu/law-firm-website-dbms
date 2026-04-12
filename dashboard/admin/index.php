@@ -9,7 +9,7 @@ require __DIR__ . '/../../includes/db.php';
 $userCount = (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
 $caseCount = (int) $pdo->query('SELECT COUNT(*) FROM cases')->fetchColumn();
 
-$pageTitle = 'Admin Dashboard | Lex & Partners';
+$pageTitle = 'Admin Dashboard | Zimba & Partners';
 $assetPathPrefix = '../../';
 $publicPathPrefix = '../../public/';
 $authPathPrefix = '../../auth/';

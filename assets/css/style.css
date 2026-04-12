@@ -48,9 +48,76 @@ html.home-snap {
 
 html.home-snap .hero,
 html.home-snap #home-services,
-html.home-snap .final-block {
+html.home-snap .home-snap-pane--last {
   scroll-snap-align: start;
   scroll-margin-top: 70px; /* Match your header height */
+}
+
+/* Third “screen” includes footer so mandatory snap can rest at doc end (same idea as about) */
+html.home-snap .home-snap-pane--last {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+}
+
+html.home-snap .home-snap-pane--last > .final-block {
+  flex: 1 0 auto;
+  min-height: unset;
+  display: flex;
+  align-items: center;
+}
+
+html.home-snap .home-snap-pane--last .site-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* About page scroll snapping (two panes; sections unchanged inside panes) */
+
+html.about-snap {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+html.about-snap .about-snap-pane--first,
+html.about-snap .about-snap-pane--second {
+  scroll-snap-align: start;
+  scroll-margin-top: 70px;
+  min-height: calc(100vh - var(--header-height));
+}
+
+html.about-snap .about-snap-pane--first {
+  display: flex;
+  flex-direction: column;
+}
+
+html.about-snap .about-snap-pane--first > .page-hero {
+  flex: 0 0 auto;
+}
+
+html.about-snap .about-snap-pane--first > .section {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+html.about-snap .about-snap-pane--first > .section > .container {
+  width: 100%;
+}
+
+html.about-snap .about-snap-pane--second {
+  display: flex;
+  flex-direction: column;
+}
+
+html.about-snap .about-snap-pane--second > .section {
+  flex: 1 0 auto;
+}
+
+html.about-snap .about-snap-pane--second .site-footer {
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 img {
@@ -187,6 +254,112 @@ h4 {
   border-radius: 999px;
   background: #e5e7eb;
   margin: 0 auto;
+}
+
+/** Members Only Link Styles */
+
+.members-link {
+  color: #111827 !important;
+  transition: color 0.2s ease !important;
+}
+
+.members-link:hover {
+  color: #e5e7eb !important;
+}
+
+/* User Dropdown Menu Styles */
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(to right, #1e293b, #0f172a);
+  color: #e5e7eb;
+  border-color: rgba(148, 163, 184, 0.5);
+}
+
+.user-menu-btn:hover {
+  background: linear-gradient(to right, #334155, #1e293b);
+  color: #f9fafb;
+}
+
+.dropdown-arrow {
+  font-size: 0.7rem;
+  transition: transform 0.2s ease;
+}
+
+.user-menu-btn[aria-expanded="true"] .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 160px;
+  background: radial-gradient(circle at 10% 0, #0f172a, #020617);
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 0;
+  transition: background 0.15s ease;
+}
+
+.dropdown-menu li a:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--color-accent);
+}
+
+/* Responsive styles for dropdown */
+
+@media (max-width: 768px) {
+  .user-menu {
+    width: 100%;
+  }
+  
+  .user-menu-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    margin-top: 0.25rem;
+    transform: none;
+    box-shadow: none;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+  }
+  
+  .dropdown-menu.show {
+    transform: none;
+  }
 }
 
 /* HERO */
@@ -611,6 +784,7 @@ textarea:focus {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .admin-grid {
@@ -657,6 +831,45 @@ textarea:focus {
 .admin-form-grid .form-group.full-width {
   grid-column: 1 / -1;
 }
+
+/* LOGIN PAGE - Full viewport height layout (footer hidden below fold) */
+
+.login-main {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-section {
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: auto;
+}
+
+.login-card {
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem; /* Adds internal spacing if needed */
+}
+
+/* Ensure body uses flex column but footer stays below viewport on login page */
+body:has(.login-main) {
+  min-height: 100vh;
+}
+
+body:has(.login-main) .site-footer {
+  margin-top: 0;
+}
+
+/* ========== END LOGIN STYLES ========== */
 
 .status-pill {
   display: inline-flex;
