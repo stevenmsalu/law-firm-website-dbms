@@ -44,6 +44,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Auto-scroll to latest message in case thread
+  const messageThread = document.querySelector('.message-thread');
+  if (messageThread) {
+    messageThread.scrollTop = messageThread.scrollHeight;
+  }
+
   const contactForm = document.getElementById("contact-form");
   if (!contactForm) return;
 
@@ -135,14 +141,29 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    contactForm.reset();
-    Object.keys(fields).forEach((id) => {
-      const input = contactForm.elements[id];
-      if (input) clearError(input);
-    });
+    // 🔁 REPLACED: contactForm.reset() with AJAX fetch to backend
+    fetch('handlers/contact_handler.php', {
+      method: 'POST',
+      body: new FormData(contactForm)
+    })
+        .then(res => res.text())
+        .then(data => {
+          if (data === 'success') {
+            contactForm.reset();
 
-    if (successEl) {
-      successEl.textContent = "Thank you for your message. We will contact you shortly.";
-    }
+            if (successEl) {
+              successEl.textContent = "Thank you. Your message has been received.";
+            }
+          } else {
+            if (successEl) {
+              successEl.textContent = "Something went wrong. Please try again.";
+            }
+          }
+        })
+        .catch(() => {
+          if (successEl) {
+            successEl.textContent = "Server error. Try again later.";
+          }
+        });
   });
 });
