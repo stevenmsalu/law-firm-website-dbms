@@ -73,7 +73,7 @@ include '../../includes/header.php';
                   <td><?php echo htmlspecialchars((string) ($case['lawyer_name'] ?? 'Unassigned'), ENT_QUOTES, 'UTF-8'); ?></td>
                   <td><span class="status-pill"><?php echo htmlspecialchars($case['status'], ENT_QUOTES, 'UTF-8'); ?></span></td>
                   <td><?php echo htmlspecialchars(date('M d, Y', strtotime((string) $case['created_at'])), ENT_QUOTES, 'UTF-8'); ?></td>
-                  <td><a class="card-link" href="<?php echo APP_BASE_PATH; ?>/dashboard/case.php?id=<?php echo (int) $case['id']; ?>">View</a></td>
+                  <td><a class="card-link" href="<?php echo APP_BASE_PATH; ?>/dashboard/case.php?id=<?php echo (int) $case['id']; ?>&amp;view=summary">View</a></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

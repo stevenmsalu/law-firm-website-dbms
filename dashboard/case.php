@@ -2,8 +2,17 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/../auth/role_check.php';
-require_any_role(['client', 'lawyer']);
+require_once __DIR__ . '/../auth/role_check.php';
+
+$role = (string) ($_SESSION['role'] ?? '');
+$summaryOnly = ($role === 'admin');
+
+if ($summaryOnly) {
+    require_role('admin');
+} else {
+    require_any_role(['client', 'lawyer']);
+}
+
 $pdo = require __DIR__ . '/../database/connection.php';
 
 $successMessage = '';
@@ -44,12 +53,17 @@ if (!$case) {
 }
 
 $userId = (int) $_SESSION['user_id'];
-if ($userId !== (int) $case['client_id'] && $userId !== (int) $case['lawyer_id']) {
-    http_response_code(403);
-    exit('Access denied');
+
+if (!$summaryOnly) {
+    if ($userId !== (int) $case['client_id'] && $userId !== (int) $case['lawyer_id']) {
+        http_response_code(403);
+        exit('Access denied');
+    }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$messages = [];
+
+if (!$summaryOnly && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $postedCaseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
     $messageBody = trim((string) ($_POST['message'] ?? ''));
     $filePath = null;
@@ -115,27 +129,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if (isset($_GET['sent']) && $_GET['sent'] === '1') {
+if (!$summaryOnly && isset($_GET['sent']) && $_GET['sent'] === '1') {
     $successMessage = 'Message sent successfully.';
 }
 
-$messageStmt = $pdo->prepare(
-    "SELECT
-        messages.id,
-        messages.message,
-        messages.file_path,
-        messages.created_at,
-        messages.sender_id,
-        users.name
-     FROM messages
-     JOIN users ON users.id = messages.sender_id
-     WHERE messages.case_id = :case_id
-     ORDER BY messages.created_at ASC"
-);
-$messageStmt->execute(['case_id' => (int) $case['id']]);
-$messages = $messageStmt->fetchAll();
+if (!$summaryOnly) {
+    $messageStmt = $pdo->prepare(
+        "SELECT
+            messages.id,
+            messages.message,
+            messages.file_path,
+            messages.created_at,
+            messages.sender_id,
+            users.name
+         FROM messages
+         JOIN users ON users.id = messages.sender_id
+         WHERE messages.case_id = :case_id
+         ORDER BY messages.created_at ASC"
+    );
+    $messageStmt->execute(['case_id' => (int) $case['id']]);
+    $messages = $messageStmt->fetchAll();
+}
 
-$pageTitle = 'Case Details | Zimba & Partners';
+$pageTitle = $summaryOnly ? 'Case Summary | Admin' : 'Case Details | Zimba & Partners';
 $assetPathPrefix = '../';
 $publicPathPrefix = '../public/';
 $authPathPrefix = '../auth/';
@@ -146,7 +162,13 @@ include '../includes/header.php';
   <section class="page-hero">
     <div class="container">
       <h1><?php echo htmlspecialchars($case['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
-      <p>Review the full matter summary and assignment details below.</p>
+      <p>
+        <?php if ($summaryOnly): ?>
+          Administrator case summary — assignment and status details only.
+        <?php else: ?>
+          Review the full matter summary and assignment details below.
+        <?php endif; ?>
+      </p>
     </div>
   </section>
 
@@ -161,13 +183,19 @@ include '../includes/header.php';
         <aside class="highlight-panel">
           <h2>Case Information</h2>
           <ul class="checklist">
-            <li>Status: <?php echo htmlspecialchars($case['status'], ENT_QUOTES, 'UTF-8'); ?></li>
+            <?php if ($summaryOnly): ?>
+              <li>Case ID: <?php echo (int) $case['id']; ?></li>
+            <?php endif; ?>
+            <li>Status: <span class="status-pill"><?php echo htmlspecialchars($case['status'], ENT_QUOTES, 'UTF-8'); ?></span></li>
             <li>Client: <?php echo htmlspecialchars((string) ($case['client_name'] ?? 'Unassigned'), ENT_QUOTES, 'UTF-8'); ?></li>
             <li>Lawyer: <?php echo htmlspecialchars((string) ($case['lawyer_name'] ?? 'Unassigned'), ENT_QUOTES, 'UTF-8'); ?></li>
-            <li>Created: <?php echo htmlspecialchars(date('M d, Y', strtotime((string) $case['created_at'])), ENT_QUOTES, 'UTF-8'); ?></li>
+            <li>Created: <?php echo htmlspecialchars(date('M d, Y g:i A', strtotime((string) $case['created_at'])), ENT_QUOTES, 'UTF-8'); ?></li>
           </ul>
           <div class="admin-actions">
-            <?php if (($_SESSION['role'] ?? '') === 'client'): ?>
+            <?php if ($summaryOnly): ?>
+              <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/manage_cases.php">Back to Manage Cases</a>
+              <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/index.php">Admin Dashboard</a>
+            <?php elseif (($_SESSION['role'] ?? '') === 'client'): ?>
               <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/client.php">Back to Client Dashboard</a>
             <?php else: ?>
               <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/lawyer.php">Back to Lawyer Dashboard</a>
@@ -178,6 +206,7 @@ include '../includes/header.php';
     </div>
   </section>
 
+  <?php if (!$summaryOnly): ?>
   <section class="section">
     <div class="container">
       <div class="card">
@@ -238,6 +267,7 @@ include '../includes/header.php';
       </div>
     </div>
   </section>
+  <?php endif; ?>
 </main>
 
 <?php include '../includes/footer.php'; ?>
