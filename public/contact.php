@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Zimba & Partners | Contact';
+$pageTitle = 'Zimba & Partners Law Firm | Contact';
 $activePage = 'contact';
 include '../includes/header.php';
 ?>
@@ -28,7 +28,7 @@ include '../includes/header.php';
             </p>
             <p>
               <strong>Phone</strong>: +260 211 123456<br />
-              <strong>Email</strong>: info@zimbapatners.co.zm
+              <strong>Email</strong>: info@zimbapartners.co.zm
             </p>
           </div>
 
@@ -69,7 +69,7 @@ include '../includes/header.php';
                 <button type="submit" class="btn btn-full">Submit</button>
               </div>
 
-              <p id="form-success" class="form-success" role="status" aria-live="polite"></p>
+              <p id="form-success" class="form-success"></p>
             </form>
           </div>
         </div>
@@ -77,7 +77,3 @@ include '../includes/header.php';
     </main>
 
 <?php include '../includes/footer.php'; ?>
-
-
-
-

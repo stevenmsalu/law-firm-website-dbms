@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Zimba & Partners | Services';
+$pageTitle = 'Zimba & Partners Law Firm | Services';
 $activePage = 'services';
 include '../includes/header.php';
 ?>
@@ -14,12 +14,8 @@ include '../includes/header.php';
 
       <section class="section">
         <div class="container">
-          <header class="section-header">
-            <h2>Practice Areas</h2>
-          </header>
-
-          <div class="card-grid three">
-            <article class="card" id="corporate">
+          <div class="card-grid">
+            <div class="card" id="corporate">
               <h3>Corporate &amp; Commercial Law</h3>
               <p>
                 Legal support throughout the lifecycle of your business, from
@@ -31,9 +27,9 @@ include '../includes/header.php';
                 <li>Commercial contracts and negotiations</li>
                 <li>Mergers, acquisitions, and restructurings</li>
               </ul>
-            </article>
+            </div>
 
-            <article class="card" id="litigation">
+            <div class="card" id="litigation">
               <h3>Dispute Resolution &amp; Litigation</h3>
               <p>
                 Resolving disputes efficiently through negotiation, mediation,
@@ -45,9 +41,9 @@ include '../includes/header.php';
                 <li>Alternative dispute resolution (ADR)</li>
                 <li>Enforcement of judgments and awards</li>
               </ul>
-            </article>
+            </div>
 
-            <article class="card" id="family">
+            <div class="card" id="family">
               <h3>Family Law &amp; Estate Planning</h3>
               <p>
                 Thoughtful, empathetic support for sensitive personal matters and
@@ -59,7 +55,7 @@ include '../includes/header.php';
                 <li>Divorce and separation</li>
                 <li>Custody and guardianship arrangements</li>
               </ul>
-            </article>
+            </div>
           </div>
         </div>
       </section>
@@ -69,10 +65,10 @@ include '../includes/header.php';
           <div>
             <h2>Advisory Services</h2>
             <p>
-              Beyond transactional and dispute work, we partner with clients as
-              strategic advisors. Our team regularly assists boards, founders, and
-              executives in managing legal risk, governance structures, and
-              regulatory change.
+              Beyond legal representation, we serve as long-term advisors to the
+              businesses and families we represent. Zimba &amp; Partners works closely
+              with clients to navigate legal risk, major decisions, governance,
+              and personal matters with clarity and confidence.
             </p>
           </div>
           <div class="highlight-panel">
@@ -88,7 +84,3 @@ include '../includes/header.php';
     </main>
 
 <?php include '../includes/footer.php'; ?>
-
-
-
-

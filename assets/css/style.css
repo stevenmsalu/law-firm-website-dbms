@@ -1,13 +1,8 @@
 :root {
-  --color-bg: #040815;
-  --color-bg-alt: #081226;
-  --color-primary: #0b2d5c;
-  --color-primary-soft: #123b78;
   --color-accent: #d4af37;
   --color-accent-soft: rgba(212, 175, 55, 0.14);
   --color-text: #f5f7fb;
   --color-text-muted: #b2bdd8;
-  --color-border: rgba(255, 255, 255, 0.08);
   --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.4);
   --radius-lg: 16px;
   --radius-md: 12px;
@@ -27,7 +22,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Segoe UI", sans-serif;
   background: radial-gradient(circle at top, #101b33 0, #020712 55%);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
@@ -37,87 +32,6 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-/* Home page scroll snapping */
-
-html.home-snap {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-html.home-snap .hero,
-html.home-snap #home-services,
-html.home-snap .home-snap-pane--last {
-  scroll-snap-align: start;
-  scroll-margin-top: 70px; /* Match your header height */
-}
-
-/* Third “screen” includes footer so mandatory snap can rest at doc end (same idea as about) */
-html.home-snap .home-snap-pane--last {
-  min-height: calc(100vh - var(--header-height));
-  display: flex;
-  flex-direction: column;
-}
-
-html.home-snap .home-snap-pane--last > .final-block {
-  flex: 1 0 auto;
-  min-height: unset;
-  display: flex;
-  align-items: center;
-}
-
-html.home-snap .home-snap-pane--last .site-footer {
-  margin-top: auto;
-  flex-shrink: 0;
-}
-
-/* About page scroll snapping (two panes; sections unchanged inside panes) */
-
-html.about-snap {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-}
-
-html.about-snap .about-snap-pane--first,
-html.about-snap .about-snap-pane--second {
-  scroll-snap-align: start;
-  scroll-margin-top: 70px;
-  min-height: calc(100vh - var(--header-height));
-}
-
-html.about-snap .about-snap-pane--first {
-  display: flex;
-  flex-direction: column;
-}
-
-html.about-snap .about-snap-pane--first > .page-hero {
-  flex: 0 0 auto;
-}
-
-html.about-snap .about-snap-pane--first > .section {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-html.about-snap .about-snap-pane--first > .section > .container {
-  width: 100%;
-}
-
-html.about-snap .about-snap-pane--second {
-  display: flex;
-  flex-direction: column;
-}
-
-html.about-snap .about-snap-pane--second > .section {
-  flex: 1 0 auto;
-}
-
-html.about-snap .about-snap-pane--second .site-footer {
-  margin-top: auto;
-  flex-shrink: 0;
 }
 
 img {
@@ -336,18 +250,16 @@ h4 {
   color: var(--color-accent);
 }
 
-/* Responsive styles for dropdown */
-
 @media (max-width: 768px) {
   .user-menu {
     width: 100%;
   }
-  
+
   .user-menu-btn {
     width: 100%;
     justify-content: space-between;
   }
-  
+
   .dropdown-menu {
     position: static;
     width: 100%;
@@ -356,7 +268,7 @@ h4 {
     box-shadow: none;
     border: 1px solid rgba(148, 163, 184, 0.3);
   }
-  
+
   .dropdown-menu.show {
     transform: none;
   }
@@ -365,7 +277,7 @@ h4 {
 /* HERO */
 
 .hero {
-  padding: 3.5rem 0 3.8rem;
+  padding: 0.1rem 0 3.8rem;
   background:
     radial-gradient(circle at top left, rgba(29, 78, 216, 0.4), transparent 55%),
     radial-gradient(circle at 80% 0, rgba(212, 175, 55, 0.4), transparent 60%),
@@ -415,47 +327,54 @@ h4 {
   color: #9ca3af;
 }
 
-.hero-card {
-  background: radial-gradient(circle at 10% 0, #0f172a, #020617);
-  border-radius: 20px;
-  padding: 1.75rem 1.6rem 1.6rem;
-  border: 1px solid rgba(148, 163, 184, 0.7);
-  box-shadow: var(--shadow-soft);
-  max-width: 360px;
-  margin-left: auto;
-}
+/* HERO SLIDESHOW */
 
-.hero-card h2 {
-  font-size: 1.2rem;
-}
-
-.hero-card p {
-  margin-bottom: 0.75rem;
-}
-
-.hero-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.3rem;
-}
-
-.hero-list li {
-  font-size: 0.9rem;
-  color: var(--color-text-muted);
-  padding-left: 1.2rem;
+.hero-slideshow {
   position: relative;
-  margin-bottom: 0.4rem;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
 }
 
-.hero-list li::before {
-  content: "";
+.slideshow-track {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  min-height: 400px;
+}
+
+.slideshow-slide {
   position: absolute;
-  left: 0;
-  top: 0.55rem;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--color-accent);
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.slideshow-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.slideshow-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(2, 6, 23, 0.85) 0%,
+    rgba(2, 6, 23, 0.3) 40%,
+    rgba(2, 6, 23, 0.1) 70%,
+    transparent 100%
+  );
 }
 
 /* BUTTONS */
@@ -492,11 +411,6 @@ h4 {
   background: rgba(15, 23, 42, 0.9);
 }
 
-.btn-small {
-  padding: 0.4rem 0.95rem;
-  font-size: 0.8rem;
-}
-
 .btn-full {
   width: 100%;
 }
@@ -504,15 +418,13 @@ h4 {
 /* SECTIONS & LAYOUT */
 
 .section {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .section-alt {
   background: radial-gradient(circle at top, rgba(15, 23, 42, 0.9), #020617);
   border-top: 1px solid rgba(148, 163, 184, 0.45);
 }
-
-/* Home page full-height sections */
 
 #home-services {
   min-height: calc(100vh - var(--header-height));
@@ -536,7 +448,7 @@ h4 {
 
 .section-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.2rem;
 }
 
 .section-header.align-left {
@@ -559,23 +471,25 @@ h4 {
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-}
-
-.card-grid.three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
 }
 
 .card {
   background: radial-gradient(circle at 10% 0, #020617, #020617);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(148, 163, 184, 0.4);
-  padding: 1.4rem 1.3rem 1.3rem;
+  padding: 1rem;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
 }
 
 .card h3 {
   font-size: 1.05rem;
+}
+
+#corporate,
+#litigation,
+#family {
+  scroll-margin-top: var(--header-height);
 }
 
 .card-link {
@@ -664,7 +578,7 @@ h4 {
   box-shadow: 0 18px 35px rgba(0, 0, 0, 0.6);
 }
 
-/* PAGE HERO (INNER PAGES) */
+/* PAGE HERO */
 
 .page-hero {
   padding: 2.4rem 0 2.3rem;
@@ -684,7 +598,67 @@ h4 {
 .lawyer-card {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.lawyer-card--hover {
+  cursor: pointer;
+}
+
+.lawyer-portrait {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.lawyer-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+}
+
+.lawyer-details {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.lawyer-card--hover:hover .lawyer-portrait {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.lawyer-card--hover:hover .lawyer-details {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+  z-index: 3;
+}
+
+.lawyer-card--hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(circle at 10% 0, #020617, #020617);
+  border-radius: var(--radius-lg);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lawyer-card--hover:hover::after {
+  opacity: 1;
 }
 
 .lawyer-avatar {
@@ -734,7 +708,6 @@ label {
 }
 
 input,
-select,
 textarea {
   width: 100%;
   padding: 0.55rem 0.7rem;
@@ -749,7 +722,6 @@ textarea {
 }
 
 input:focus,
-select:focus,
 textarea:focus {
   border-color: rgba(234, 179, 8, 0.8);
   box-shadow: 0 0 0 1px rgba(234, 179, 8, 0.5);
@@ -832,120 +804,6 @@ textarea:focus {
   grid-column: 1 / -1;
 }
 
-/* ===== Messaging Fullscreen Layout ===== */
-
-.message-section {
-  min-height: calc(100vh - var(--header-height));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1.5rem 3rem 1.5rem; /* Added bottom padding for footer spacing */
-}
-
-.message-wrapper {
-  width: 100%;
-  max-width: 720px; /* controls width */
-}
-
-.message-card {
-  display: flex;
-  flex-direction: column;
-  height: 70vh; /* Slightly reduced to prevent footer collision */
-  background: radial-gradient(circle at 10% 0, #020617, #020617);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-  padding: 1rem;
-}
-
-/* Fix message thread scrolling */
-.message-thread {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: 0.5rem;
-  margin: 0.5rem 0 1rem 0;
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar for better UX */
-.message-thread::-webkit-scrollbar {
-  width: 6px;
-}
-
-.message-thread::-webkit-scrollbar-track {
-  background: rgba(148, 163, 184, 0.1);
-  border-radius: 10px;
-}
-
-.message-thread::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.5);
-  border-radius: 10px;
-}
-
-.message-thread::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.7);
-}
-
-/* Lock form to bottom */
-.message-input {
-  border-top: 1px solid rgba(148, 163, 184, 0.2);
-  padding-top: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* Ensure case info section doesn't interfere */
-.case-info-section {
-  padding-bottom: 1rem;
-}
-
-/* Reduce textarea size and improve appearance */
-textarea {
-  resize: none;
-  min-height: 70px;
-  max-height: 120px;
-  font-family: inherit;
-}
-
-/* Style for message form */
-.message-input .form-group {
-  margin-bottom: 0.75rem;
-}
-
-.message-input .admin-actions {
-  margin-top: 0.5rem;
-  margin-bottom: 0;
-}
-
-/* Better empty state styling */
-.empty-state {
-  text-align: center;
-  padding: 2rem;
-  margin: 1rem 0;
-}
-
-/* Small helper text styling */
-small {
-  display: block;
-  margin-top: 0.25rem;
-}
-
-/* Ensure footer doesn't overlap on smaller screens */
-@media (max-width: 768px) {
-  .message-section {
-    padding: 1rem 1rem 2rem 1rem;
-  }
-
-  .message-card {
-    height: 65vh;
-  }
-
-  .message-thread {
-    margin: 0.25rem 0 0.75rem 0;
-  }
-}
-
-/* LOGIN PAGE - Full viewport height layout (footer hidden below fold) */
-
 .login-main {
   min-height: calc(100vh - var(--header-height));
   display: flex;
@@ -969,10 +827,9 @@ small {
   max-width: 420px;
   width: 100%;
   margin: 0 auto;
-  padding: 2rem; /* Adds internal spacing if needed */
+  padding: 2rem;
 }
 
-/* Ensure body uses flex column but footer stays below viewport on login page */
 body:has(.login-main) {
   min-height: 100vh;
 }
@@ -980,8 +837,6 @@ body:has(.login-main) {
 body:has(.login-main) .site-footer {
   margin-top: 0;
 }
-
-/* ========== END LOGIN STYLES ========== */
 
 .status-pill {
   display: inline-flex;
@@ -1047,6 +902,8 @@ body:has(.login-main) .site-footer {
   border: 1px dashed rgba(148, 163, 184, 0.45);
   color: #cbd5e1;
   background: rgba(2, 6, 23, 0.45);
+  text-align: center;
+  margin: 1rem 0;
 }
 
 .message-thread {
@@ -1054,6 +911,24 @@ body:has(.login-main) .site-footer {
   flex-direction: column;
   gap: 1rem;
   margin: 1.25rem 0 1.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding-right: 0.5rem;
+}
+
+.message-thread::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-thread::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 10px;
+}
+
+.message-thread::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.5);
+  border-radius: 10px;
 }
 
 .message-bubble {
@@ -1091,6 +966,11 @@ body:has(.login-main) .site-footer {
 
 .message-attachment {
   margin-top: 0.75rem;
+}
+
+small {
+  display: block;
+  margin-top: 0.25rem;
 }
 
 /* FOOTER */
@@ -1153,14 +1033,18 @@ body:has(.login-main) .site-footer {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .hero-card {
-    max-width: none;
-    margin: 1.5rem auto 0;
-    width: 100%;
-  }
-
   .two-column {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-slideshow {
+    max-width: 100%;
+    margin: 1.5rem auto 0;
+  }
+
+  .slideshow-track {
+    aspect-ratio: 16 / 9;
+    min-height: 300px;
   }
 }
 
@@ -1211,8 +1095,7 @@ body:has(.login-main) .site-footer {
     padding: 2.2rem 0;
   }
 
-  .card-grid,
-  .card-grid.three {
+  .card-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -1237,5 +1120,10 @@ body:has(.login-main) .site-footer {
 
   .hero-meta > div {
     flex: 1 1 7rem;
+  }
+
+  .slideshow-track {
+    aspect-ratio: 4 / 3;
+    min-height: 250px;
   }
 }

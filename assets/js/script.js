@@ -1,11 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const navToggle = document.querySelector(".nav-toggle");
   const siteNav = document.querySelector(".site-nav");
-  const yearSpan = document.getElementById("year");
-
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear().toString();
-  }
 
   if (navToggle && siteNav) {
     navToggle.addEventListener("click", function () {
@@ -14,44 +9,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // User dropdown toggle functionality
-  const userMenuBtn = document.querySelector('.user-menu-btn');
-  const dropdownMenu = document.querySelector('.dropdown-menu');
+  const footerYear = document.getElementById("year");
+  if (footerYear) {
+    footerYear.textContent = new Date().getFullYear().toString();
+  }
+
+  const userMenuBtn = document.querySelector(".user-menu-btn");
+  const dropdownMenu = document.querySelector(".dropdown-menu");
 
   if (userMenuBtn && dropdownMenu) {
-    userMenuBtn.addEventListener('click', function(e) {
+    userMenuBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      const isExpanded = userMenuBtn.getAttribute('aria-expanded') === 'true';
-      userMenuBtn.setAttribute('aria-expanded', !isExpanded);
-      dropdownMenu.classList.toggle('show');
+      const isExpanded = userMenuBtn.getAttribute("aria-expanded") === "true";
+      userMenuBtn.setAttribute("aria-expanded", !isExpanded);
+      dropdownMenu.classList.toggle("show");
     });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener("click", function (e) {
       if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        userMenuBtn.setAttribute('aria-expanded', 'false');
-        dropdownMenu.classList.remove('show');
+        userMenuBtn.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
       }
     });
 
-    // Close dropdown on Escape key
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && dropdownMenu.classList.contains('show')) {
-        userMenuBtn.setAttribute('aria-expanded', 'false');
-        dropdownMenu.classList.remove('show');
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
+        userMenuBtn.setAttribute("aria-expanded", "false");
+        dropdownMenu.classList.remove("show");
       }
     });
   }
 
-  // Auto-scroll to latest message in case thread
-  const messageThread = document.querySelector('.message-thread');
+  const slides = document.querySelectorAll(".slideshow-slide");
+  if (slides.length > 0) {
+    let currentSlide = 0;
+    setInterval(function () {
+      slides[currentSlide].classList.remove("active");
+      currentSlide++;
+      if (currentSlide >= slides.length) {
+        currentSlide = 0;
+      }
+      slides[currentSlide].classList.add("active");
+    }, 5000);
+  }
+
+  const messageThread = document.querySelector(".message-thread");
   if (messageThread) {
     messageThread.scrollTop = messageThread.scrollHeight;
   }
 
   const contactForm = document.getElementById("contact-form");
-  if (!contactForm) return;
+  if (!contactForm) {
+    return;
+  }
+
+  const successEl = document.getElementById("form-success");
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
 
   const fields = {
     name: {
@@ -61,12 +75,16 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     email: {
       required: true,
-      validate: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+      validate: function (value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+      },
       message: "Please enter a valid email address.",
     },
     phone: {
       required: false,
-      validate: (value) => value === "" || /^[0-9+\-\s()]{6,}$/.test(value),
+      validate: function (value) {
+        return value === "" || /^[0-9+\-\s()]{6,}$/.test(value);
+      },
       message: "Please enter a valid phone number.",
     },
     subject: {
@@ -81,22 +99,40 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   };
 
-  const showError = (input, text) => {
+  function showError(input, text) {
     input.classList.add("error");
-    const msg = contactForm.querySelector(`.error-message[data-for="${input.id}"]`);
-    if (msg) msg.textContent = text;
-  };
+    const msg = contactForm.querySelector('.error-message[data-for="' + input.id + '"]');
+    if (msg) {
+      msg.textContent = text;
+    }
+  }
 
-  const clearError = (input) => {
+  function clearError(input) {
     input.classList.remove("error");
-    const msg = contactForm.querySelector(`.error-message[data-for="${input.id}"]`);
-    if (msg) msg.textContent = "";
-  };
+    const msg = contactForm.querySelector('.error-message[data-for="' + input.id + '"]');
+    if (msg) {
+      msg.textContent = "";
+    }
+  }
 
-  const validateField = (id) => {
+  function clearAllErrors() {
+    Object.keys(fields).forEach(function (id) {
+      const input = contactForm.elements[id];
+      if (input) {
+        clearError(input);
+      }
+    });
+    if (successEl) {
+      successEl.textContent = "";
+    }
+  }
+
+  function validateField(id) {
     const config = fields[id];
     const input = contactForm.elements[id];
-    if (!config || !input) return true;
+    if (!config || !input) {
+      return true;
+    }
 
     const value = input.value.trim();
     if (config.required && value === "") {
@@ -114,56 +150,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
     clearError(input);
     return true;
-  };
+  }
 
-  Object.keys(fields).forEach((id) => {
+  Object.keys(fields).forEach(function (id) {
     const input = contactForm.elements[id];
-    if (!input) return;
-    input.addEventListener("blur", () => validateField(id));
-    input.addEventListener("input", () => clearError(input));
+    if (!input) {
+      return;
+    }
+    input.addEventListener("blur", function () {
+      validateField(id);
+    });
+    input.addEventListener("input", function () {
+      clearError(input);
+    });
   });
 
   contactForm.addEventListener("submit", function (event) {
     event.preventDefault();
+    clearAllErrors();
 
     let isValid = true;
-    Object.keys(fields).forEach((id) => {
+    Object.keys(fields).forEach(function (id) {
       if (!validateField(id)) {
         isValid = false;
       }
     });
 
-    const successEl = document.getElementById("form-success");
     if (!isValid) {
-      if (successEl) {
-        successEl.textContent = "";
-      }
       return;
     }
 
-    // 🔁 REPLACED: contactForm.reset() with AJAX fetch to backend
-    fetch('handlers/contact_handler.php', {
-      method: 'POST',
-      body: new FormData(contactForm)
-    })
-        .then(res => res.text())
-        .then(data => {
-          if (data === 'success') {
-            contactForm.reset();
+    if (submitBtn) {
+      submitBtn.disabled = true;
+    }
 
-            if (successEl) {
-              successEl.textContent = "Thank you. Your message has been received.";
-            }
-          } else {
-            if (successEl) {
-              successEl.textContent = "Something went wrong. Please try again.";
-            }
-          }
-        })
-        .catch(() => {
-          if (successEl) {
-            successEl.textContent = "Server error. Try again later.";
-          }
+    fetch("handlers/contact_handler.php", {
+      method: "POST",
+      body: new FormData(contactForm),
+    })
+      .then(function (res) {
+        return res.text().then(function (text) {
+          return { ok: res.ok, text: text };
         });
+      })
+      .then(function (result) {
+        if (result.ok && result.text.trim() === "success") {
+          contactForm.reset();
+          if (successEl) {
+            successEl.textContent =
+              "Thank you for your message. We will get back to you soon!";
+          }
+          setTimeout(function () {
+            window.location.reload();
+          }, 3000);
+          return;
+        }
+
+        if (successEl) {
+          successEl.textContent =
+            result.text.trim() || "Something went wrong. Please try again.";
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+      })
+      .catch(function () {
+        if (successEl) {
+          successEl.textContent = "Server error. Try again later.";
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+        }
+      });
   });
 });

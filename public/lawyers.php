@@ -1,59 +1,68 @@
 <?php
-$pageTitle = 'Zimba & Partners | Our Lawyers';
+$pageTitle = 'Zimba & Partners Law Firm | Our Lawyers';
 $activePage = 'lawyers';
 include '../includes/header.php';
 ?>
 
 <main>
-      <section class="page-hero">
-        <div class="container">
-          <h1>Our Lawyers</h1>
-          <p>Experienced advocates committed to your case.</p>
-        </div>
-      </section>
-
       <section class="section">
         <div class="container">
           <header class="section-header">
-            <h2>Leadership</h2>
+            <h1>Our Lawyers</h1>
+            <p>Experienced advocates committed to your case.</p>
           </header>
+          <div class="card-grid">
+            <div class="card lawyer-card lawyer-card--hover">
+              <div class="lawyer-portrait">
+                <img src="../assets/img/lawyers/mwansa-zimba.jpg" alt="Mwansa Zimba" />
+              </div>
+              <div class="lawyer-details">
+                <div class="lawyer-avatar">MZ</div>
+                <h3>Mwansa Zimba</h3>
+                <p class="lawyer-role">Partner, Dispute Resolution &amp; Litigation</p>
+                <p>
+                  Mwansa represents clients in commercial disputes, negotiations,
+                  and civil litigation before Zambian courts and tribunals. Known
+                  for her calm, strategic approach and sharp advocacy.
+                </p>
+                <p class="lawyer-meta">Member: Law Association of Zambia</p>
+              </div>
+            </div>
 
-          <div class="card-grid three">
-            <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">MK</div>
-              <h3>Mwansa Kabwe</h3>
-              <p class="lawyer-role">Managing Partner &amp; Corporate Counsel</p>
-              <p>
-                Mwansa advises Zambian and regional companies on corporate
-                governance, complex transactions, and regulatory compliance under
-                Zambian law.
-              </p>
-              <p class="lawyer-meta">Bar Admissions: High Court of Zambia; Law Association of Zambia</p>
-            </article>
+            <div class="card lawyer-card lawyer-card--hover">
+              <div class="lawyer-portrait">
+                <img src="../assets/img/lawyers/jessica-zimba.jpg" alt="Jessica Zimba" />
+              </div>
+              <div class="lawyer-details">
+                <div class="lawyer-avatar">JZ</div>
+                <h3>Jessica Zimba</h3>
+                <p class="lawyer-role">Founder &amp; Managing Partner</p>
+                <p>
+                  Jessica, founder of Zimba &amp; Partners, advises businesses and
+                  families on corporate governance, transactions, and strategic
+                  legal matters across Zambia and the wider region.
+                </p>
+                <p class="lawyer-meta">Bar Admissions: High Court of Zambia; Law Association of Zambia</p>
+              </div>
+            </div>
 
-            <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">MC</div>
-              <h3>Mutale Chileshe</h3>
-              <p class="lawyer-role">Head of Litigation</p>
-              <p>
-                Mutale represents clients in high-stakes commercial disputes before
-                the High Court of Zambia, with a focus on contracts, shareholder
-                matters, and arbitration.
-              </p>
-              <p class="lawyer-meta">Member: Law Association of Zambia</p>
-            </article>
-
-            <article class="card lawyer-card">
-              <div class="lawyer-avatar placeholder-avatar">BN</div>
-              <h3>Bwalya Namukolo</h3>
-              <p class="lawyer-role">Partner, Family &amp; Estate</p>
-              <p>
-                Bwalya provides discreet, compassionate counsel to individuals and
-                families on divorce, custody, wills, and estate administration
-                across Zambia.
-              </p>
-              <p class="lawyer-meta">Admitted: High Court of Zambia</p>
-            </article>
+            <div class="card lawyer-card lawyer-card--hover">
+              <div class="lawyer-portrait">
+                <img src="../assets/img/lawyers/bupe-zimba.jpg" alt="Bupe Zimba" />
+              </div>
+              <div class="lawyer-details">
+                <div class="lawyer-avatar">BZ</div>
+                <h3>Bupe Zimba</h3>
+                <p class="lawyer-role">Partner, Family &amp; Estate Law</p>
+                <p>
+                  Bupe guides families through wills, estate planning, and
+                  sensitive personal matters. Her approach combines empathy,
+                  discretion, and practical legal guidance tailored to each
+                  client's circumstances.
+                </p>
+                <p class="lawyer-meta">Admitted: High Court of Zambia</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -86,7 +95,3 @@ include '../includes/header.php';
     </main>
 
 <?php include '../includes/footer.php'; ?>
-
-
-
-

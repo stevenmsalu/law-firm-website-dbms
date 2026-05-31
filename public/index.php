@@ -1,7 +1,6 @@
 <?php
-$pageTitle = 'Zimba & Partners | Home';
+$pageTitle = 'Zimba & Partners Law Firm | Home';
 $activePage = 'home';
-$htmlClass = 'home-snap';
 include '../includes/header.php';
 ?>
 
@@ -24,7 +23,7 @@ include '../includes/header.php';
                 <span class="hero-meta-text">of combined experience</span>
               </div>
               <div>
-                <span class="hero-meta-label">500+ Cases</span>
+                <span class="hero-meta-label">300+ Cases</span>
                 <span class="hero-meta-text">successfully resolved</span>
               </div>
               <div>
@@ -34,15 +33,21 @@ include '../includes/header.php';
             </div>
           </div>
 
-          <div class="hero-card">
-            <h2>Schedule a Free 30-Minute Call</h2>
-            <p>Share your legal concern and we’ll guide your next steps.</p>
-            <ul class="hero-list">
-              <li>Business &amp; corporate advisory</li>
-              <li>Family and estate planning</li>
-              <li>Litigation &amp; dispute resolution</li>
-            </ul>
-            <a href="contact.php" class="btn btn-full">Get Started</a>
+          <div class="hero-slideshow">
+            <div class="slideshow-track">
+              <div class="slideshow-slide active">
+                <img src="../assets/img/hero/hero-slide-1.jpg" alt="Modern law office interior" />
+                <div class="slide-overlay"></div>
+              </div>
+              <div class="slideshow-slide">
+                <img src="../assets/img/hero/hero-slide-2.jpg" alt="Legal team in consultation" />
+                <div class="slide-overlay"></div>
+              </div>
+              <div class="slideshow-slide">
+                <img src="../assets/img/hero/hero-slide-3.jpg" alt="Courtroom advocacy" />
+                <div class="slide-overlay"></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -55,79 +60,65 @@ include '../includes/header.php';
           </header>
 
           <div class="card-grid">
-            <article class="card">
+            <div class="card">
               <h3>Corporate &amp; Commercial Law</h3>
               <p>
                 From company formation to complex transactions, we help businesses
                 navigate risk, compliance, and growth.
               </p>
               <a href="services.php#corporate" class="card-link">Learn more</a>
-            </article>
+            </div>
 
-            <article class="card">
+            <div class="card">
               <h3>Dispute Resolution &amp; Litigation</h3>
               <p>
                 Skilled advocacy in negotiations, mediation, and courtroom
                 proceedings to protect your interests.
               </p>
               <a href="services.php#litigation" class="card-link">Learn more</a>
-            </article>
+            </div>
 
-            <article class="card">
+            <div class="card">
               <h3>Family &amp; Estate Planning</h3>
               <p>
                 Sensitive, practical guidance for wills, trusts, divorce, and
                 long-term planning.
               </p>
               <a href="services.php#family" class="card-link">Learn more</a>
-            </article>
+            </div>
           </div>
         </div>
       </section>
 
-      <div class="home-snap-pane home-snap-pane--last">
-        <section class="section section-alt final-block">
-          <div class="container two-column">
+      <section class="section section-alt final-block">
+        <div class="container two-column">
+          <div>
+            <header class="section-header align-left">
+              <h2>Why Clients Choose Zimba &amp; Partners</h2>
+            </header>
+            <ul class="checklist">
+              <li>Client-first, relationship-driven approach</li>
+              <li>Clear, transparent communication at every stage</li>
+              <li>Business-minded strategies, not just legal theory</li>
+              <li>Discreet handling of sensitive matters</li>
+            </ul>
+          </div>
+          <div class="stats-panel">
             <div>
-              <header class="section-header align-left">
-                <h2>Why Clients Choose Zimba &amp; Partners</h2>
-              </header>
-              <ul class="checklist">
-                <li>Client-first, relationship-driven approach</li>
-                <li>Clear, transparent communication at every stage</li>
-                <li>Business-minded strategies, not just legal theory</li>
-                <li>Discreet handling of sensitive matters</li>
-              </ul>
+              <span class="stat-number">98%</span>
+              <span class="stat-label">Client satisfaction</span>
             </div>
-            <div class="stats-panel">
-              <div>
-                <span class="stat-number">98%</span>
-                <span class="stat-label">Client satisfaction</span>
-              </div>
-              <div>
-                <span class="stat-number">3</span>
-                <span class="stat-label">Countries served</span>
-              </div>
-              <div>
-                <span class="stat-number">24h</span>
-                <span class="stat-label">Average response time</span>
-              </div>
+            <div>
+              <span class="stat-number">3</span>
+              <span class="stat-label">Countries served</span>
+            </div>
+            <div>
+              <span class="stat-number">24h</span>
+              <span class="stat-label">Average response time</span>
             </div>
           </div>
-        </section>
-
-        <?php include __DIR__ . '/../includes/footer_body.php'; ?>
-      </div>
+        </div>
+      </section>
     </main>
 
-<?php
-$skipFooterBody = true;
-include '../includes/footer.php';
-unset($skipFooterBody);
-?>
-
-
-
-
-
-
+<?php include '../includes/footer.php'; ?>

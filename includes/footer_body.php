@@ -17,7 +17,7 @@
                 <h4>Contact</h4>
                 <p>
                     Phone: +260 211 123456<br />
-                    Email: info@zimbapatners.co.zm
+                    Email: info@zimbapartners.co.zm
                 </p>
             </div>
             <div>

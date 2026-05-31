@@ -32,6 +32,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+    <link rel="icon" type="image/png" href="<?php echo htmlspecialchars($assetPathPrefix, ENT_QUOTES, 'UTF-8'); ?>assets/img/favicon/favicon.png" />
     <link rel="stylesheet" href="<?php echo htmlspecialchars($assetPathPrefix, ENT_QUOTES, 'UTF-8'); ?>assets/css/style.css?v=<?php echo htmlspecialchars($cssVersion, ENT_QUOTES, 'UTF-8'); ?>" />
   </head>
   <body>
