@@ -193,10 +193,16 @@ document.addEventListener("DOMContentLoaded", function () {
           const responseText = text.trim();
 
           if (res.ok && responseText === "success") {
+            // Reset the form and show success message
             contactForm.reset();
             if (successMessage) {
               successMessage.textContent =
                 "Thank you for your message. We will get back to you soon!";
+              
+              // Clear the success message after 5 seconds
+              setTimeout(function () {
+                successMessage.textContent = "";
+              }, 5000);
             }
             if (submitButton) {
               submitButton.disabled = false;
