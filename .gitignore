@@ -1,8 +1,30 @@
-# Logs
-/storage/logs/*.log
+# Logs (runtime only)
+/storage/logs/*
 !/storage/logs/.gitkeep
 
-# IDE
-/.idea/
+# User uploads (runtime only; keep folder via .gitkeep)
+/uploads/*
+!/uploads/.gitkeep
 
+# IDE and editors
+.idea/
+.vscode/
+*.iml
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backups and temp files
+*~
+*.bak
+*.swp
+*.tmp
+
+# Local environment (not committed)
+.env
+.env.local
+
+# Project 1 reference copy (not part of this submission)
 /law-firm-website-iwd/
