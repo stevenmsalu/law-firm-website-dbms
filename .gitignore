@@ -25,7 +25,3 @@ desktop.ini
 # Local environment (not committed)
 .env
 .env.local
-
-# Reference projects (not part of this submission)
-/law-firm-website-iwd/
-/xul_project_dbms/

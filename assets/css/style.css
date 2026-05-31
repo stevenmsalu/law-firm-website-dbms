@@ -863,6 +863,10 @@ select:focus {
   padding: 2rem;
 }
 
+.login-card.help-card {
+  max-width: 32rem;
+}
+
 body:has(.login-main) {
   min-height: 100vh;
 }

@@ -105,7 +105,7 @@ include '../includes/header.php';
 
           <div class="admin-actions">
             <button type="submit" class="btn">Login</button>
-            <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/public/contact.php">Need Help?</a>
+            <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/auth/help.php">Need Help?</a>
           </div>
         </form>
       </div>
