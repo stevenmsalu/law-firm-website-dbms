@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email === '' || $plainPassword === '') {
         $error = 'Please enter both email and password.';
     } else {
-        require_once __DIR__ . '/../includes/db.php';
+        $pdo = require __DIR__ . '/../database/connection.php';
 
         $stmt = $pdo->prepare('SELECT id, name, email, password, role FROM users WHERE email = :email LIMIT 1');
         $stmt->execute(['email' => $email]);

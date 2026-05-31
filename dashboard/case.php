@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../auth/role_check.php';
 require_any_role(['client', 'lawyer']);
-require __DIR__ . '/../includes/db.php';
+$pdo = require __DIR__ . '/../database/connection.php';
 
 $successMessage = '';
 $errorMessage = '';

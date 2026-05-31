@@ -11,12 +11,7 @@ declare(strict_types=1);
  * Open in your browser:
  * http://localhost/law-firm-website-dbms/database/setup.php
  */
-
-$dbHost = 'localhost';
-$dbName = 'law_firm_db';
-$dbUser = 'root';
-$dbPass = '';
-$dbCharset = 'utf8mb4';
+require __DIR__ . '/config.php';
 
 $adminName = 'Admin User';
 $adminEmail = 'admin@lawfirm.com';
@@ -38,7 +33,6 @@ try {
         throw new RuntimeException('Could not read schema.sql.');
     }
 
-    // Remove line comments, then run each SQL statement
     $sql = preg_replace('/^\s*--.*$/m', '', $sql);
 
     $pdo = new PDO(
@@ -55,12 +49,7 @@ try {
         }
     }
 
-    $pdo = new PDO(
-        "mysql:host={$dbHost};dbname={$dbName};charset={$dbCharset}",
-        $dbUser,
-        $dbPass,
-        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-    );
+    $pdo = require __DIR__ . '/connection.php';
 
     $stmt = $pdo->prepare(
         'INSERT INTO users (name, email, password, role)

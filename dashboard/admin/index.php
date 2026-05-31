@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../../auth/role_check.php';
 require_role('admin');
-require __DIR__ . '/../../includes/db.php';
+$pdo = require __DIR__ . '/../../database/connection.php';
 
 $userCount = (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
 $caseCount = (int) $pdo->query('SELECT COUNT(*) FROM cases')->fetchColumn();

@@ -27,16 +27,39 @@ PHP/MySQL law firm website with public pages, contact form, authentication, and 
 
 Login: **http://localhost/law-firm-website-dbms/auth/login.php**
 
-## Database configuration
-
-Connection settings are in `config/database.php` (host, database name, user, password). They must match the values used in `database/setup.php`.
-
 ## Project layout
 
-- `public/` — public website pages
-- `auth/` — login and logout
-- `dashboard/` — admin, lawyer, and client areas
-- `database/` — `schema.sql` and browser setup (`setup.php`)
-- `config/` — app paths and database connection
-- `includes/` — shared layout and DB include
-- `assets/` — CSS, JavaScript, and images
+| Folder / file | Purpose |
+|---------------|---------|
+| `public/` | Public website pages and form handlers |
+| `auth/` | Login, logout, and session checks |
+| `dashboard/` | Admin, lawyer, and client areas |
+| `database/` | **All database files** (see below) |
+| `config/` | App paths and session (`app.php`) |
+| `includes/` | Shared page layout (header, footer) |
+| `assets/` | CSS, JavaScript, and images |
+| `index.php` | Root redirect to the public home page |
+
+### Database folder (`database/`)
+
+| File | Purpose |
+|------|---------|
+| `config.php` | MySQL host, database name, user, and password |
+| `schema.sql` | Table definitions |
+| `setup.php` | One-time browser setup (schema + admin seed) |
+| `connection.php` | PDO connection used by the running application |
+
+**Edit credentials in one place:** `database/config.php`
+
+**Application pages load the database with:**
+
+```php
+$pdo = require __DIR__ . '/../database/connection.php';
+```
+
+(Adjust `../` based on how deep the PHP file is in the folder tree.)
+
+## Runtime folders (not committed)
+
+- `uploads/` — case attachments
+- `storage/logs/` — log files

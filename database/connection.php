@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-$dbHost = 'localhost';
-$dbName = 'law_firm_db';
-$dbUser = 'root';
-$dbPass = '';
-$dbCharset = 'utf8mb4';
+/**
+ * Returns a PDO connection to the application database.
+ * Include from PHP pages: $pdo = require __DIR__ . '/../database/connection.php';
+ */
+require __DIR__ . '/config.php';
 
 $dbDsn = "mysql:host={$dbHost};dbname={$dbName};charset={$dbCharset}";
 
@@ -16,6 +16,4 @@ $dbOptions = [
     PDO::ATTR_EMULATE_PREPARES => false,
 ];
 
-$pdo = new PDO($dbDsn, $dbUser, $dbPass, $dbOptions);
-
-return $pdo;
+return new PDO($dbDsn, $dbUser, $dbPass, $dbOptions);
