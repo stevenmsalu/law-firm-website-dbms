@@ -59,7 +59,6 @@ $pdo = require __DIR__ . '/../database/connection.php';
 
 (Adjust `../` based on how deep the PHP file is in the folder tree.)
 
-## Runtime folders (not committed)
+## Runtime folder (not committed)
 
-- `uploads/` — case attachments
-- `storage/logs/` — log files
+- `uploads/` — case message attachments (created automatically when needed)

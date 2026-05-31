@@ -1,7 +1,3 @@
-# Logs (runtime only)
-/storage/logs/*
-!/storage/logs/.gitkeep
-
 # User uploads (runtime only; keep folder via .gitkeep)
 /uploads/*
 !/uploads/.gitkeep
