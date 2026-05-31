@@ -1,14 +1,42 @@
-# Project File Organization
+# Zimba & Partners — Law Firm Website (DBMS)
 
-This project separates files by purpose:
+PHP/MySQL law firm website with public pages, contact form, authentication, and case messaging.
 
-- `public/`: public-facing pages and form handlers
-- `auth/`: login, logout, and session checks
-- `dashboard/`: admin, lawyer, and client areas
-- `includes/`: shared layout and database connection
-- `config/`: application and database settings
-- `database/`: SQL schema and seed scripts
-- `scripts/setup/`: one-time setup (e.g. `init_db.php`)
-- `assets/`: CSS, JavaScript, and images
-- `storage/logs/`: runtime log output (not committed)
-- `uploads/`: case attachments and uploaded files (not committed)
+## Quick start (XAMPP)
+
+1. Copy this project into `htdocs` (e.g. `C:\xampp\htdocs\law-firm-website-dbms`).
+2. Start **Apache** and **MySQL** in the XAMPP Control Panel.
+3. Open the setup URL in your browser:
+
+   **http://localhost/law-firm-website-dbms/database/setup.php**
+
+   This creates the database, tables, and default admin user in one step.
+
+4. Visit the site:
+
+   **http://localhost/law-firm-website-dbms/**
+
+   (redirects to the public home page)
+
+## Default admin login
+
+| Field    | Value                 |
+|----------|-----------------------|
+| Email    | `admin@lawfirm.com`   |
+| Password | `admin123`            |
+
+Login: **http://localhost/law-firm-website-dbms/auth/login.php**
+
+## Database configuration
+
+Connection settings are in `config/database.php` (host, database name, user, password). They must match the values used in `database/setup.php`.
+
+## Project layout
+
+- `public/` — public website pages
+- `auth/` — login and logout
+- `dashboard/` — admin, lawyer, and client areas
+- `database/` — `schema.sql` and browser setup (`setup.php`)
+- `config/` — app paths and database connection
+- `includes/` — shared layout and DB include
+- `assets/` — CSS, JavaScript, and images

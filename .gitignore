@@ -26,5 +26,6 @@ desktop.ini
 .env
 .env.local
 
-# Project 1 reference copy (not part of this submission)
+# Reference projects (not part of this submission)
 /law-firm-website-iwd/
+/xul_project_dbms/

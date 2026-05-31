@@ -1,3 +1,4 @@
+-- Run via database/setup.php in your browser (see README.md)
 CREATE DATABASE IF NOT EXISTS law_firm_db
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
