@@ -46,7 +46,7 @@ if (session_status() === PHP_SESSION_NONE) {
           </span>
         </a>
 
-        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <button class="nav-toggle" aria-label="Toggle navigation">
           <span class="nav-toggle-line"></span>
           <span class="nav-toggle-line"></span>
           <span class="nav-toggle-line"></span>
@@ -63,13 +63,12 @@ if (session_status() === PHP_SESSION_NONE) {
               <!-- User is logged in - show user menu -->
               <li class="user-menu">
                 <div class="user-dropdown">
-                  <button class="btn btn-small user-menu-btn" aria-expanded="false">
+                  <button type="button" class="btn btn-small user-menu-btn">
                     <?php 
                     $userName = $_SESSION['name'];
                     $firstName = explode(' ', $userName)[0];
                     echo htmlspecialchars($firstName, ENT_QUOTES, 'UTF-8'); 
                     ?>
-                    <span class="dropdown-arrow">▼</span>
                   </button>
                   <ul class="dropdown-menu">
                     <li><a href="<?php 

@@ -8,8 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (navToggle && siteNav) {
     navToggle.addEventListener("click", function () {
-      const isOpen = siteNav.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      siteNav.classList.toggle("open");
     });
   }
 
@@ -29,28 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropdownMenu = document.querySelector(".dropdown-menu");
 
   if (userMenuBtn && dropdownMenu) {
-    userMenuBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      const isExpanded = userMenuBtn.getAttribute("aria-expanded") === "true";
-      userMenuBtn.setAttribute("aria-expanded", !isExpanded);
+    userMenuBtn.addEventListener("click", function () {
       dropdownMenu.classList.toggle("show");
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener("click", function (e) {
-      if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-        userMenuBtn.setAttribute("aria-expanded", "false");
-        dropdownMenu.classList.remove("show");
-      }
-    });
-
-    // Close menu with Escape key
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && dropdownMenu.classList.contains("show")) {
-        userMenuBtn.setAttribute("aria-expanded", "false");
-        dropdownMenu.classList.remove("show");
-      }
     });
   }
 
@@ -80,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const messageThread = document.querySelector(".message-thread");
 
   if (messageThread) {
-    // Scroll to the latest message on page load
     messageThread.scrollTop = messageThread.scrollHeight;
   }
 
@@ -96,6 +74,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const successMessage = document.getElementById("form-success");
   const submitButton = contactForm.querySelector('button[type="submit"]');
 
+  /**
+   * Validation rules for each contact form field.
+   * required: field must not be empty
+   * minLength: minimum character count
+   * validate: custom check function (optional)
+   * message: error text shown to the user
+   */
   const fields = {
     name: {
       required: true,
@@ -129,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   /**
-   * Shows an error message for one form field.
+   * Marks one field as invalid and shows its error message.
    */
   function showError(input, text) {
     input.classList.add("error");
@@ -140,73 +125,50 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Clears the error state for one form field.
-   */
-  function clearError(input) {
-    input.classList.remove("error");
-    const msg = contactForm.querySelector('.error-message[data-for="' + input.id + '"]');
-    if (msg) {
-      msg.textContent = "";
-    }
-  }
-
-  /**
-   * Clears all field errors and the success message.
+   * Clears all field errors and the success message before a new submit attempt.
    */
   function clearErrors() {
-    Object.keys(fields).forEach(function (id) {
-      const input = contactForm.elements[id];
-      if (input) {
-        clearError(input);
-      }
+    contactForm.querySelectorAll(".error-message").forEach(function (el) {
+      el.textContent = "";
     });
-
+    contactForm.querySelectorAll("input, textarea").forEach(function (field) {
+      field.classList.remove("error");
+    });
     if (successMessage) {
       successMessage.textContent = "";
     }
   }
 
   /**
-   * Validates one field by id and returns true if it passes.
-   */
-  function validateField(id) {
-    const config = fields[id];
-    const input = contactForm.elements[id];
-
-    if (!config || !input) {
-      return true;
-    }
-
-    const value = input.value.trim();
-
-    if (config.required && value === "") {
-      showError(input, config.message);
-      return false;
-    }
-
-    if (config.minLength && value !== "" && value.length < config.minLength) {
-      showError(input, config.message);
-      return false;
-    }
-
-    if (config.validate && !config.validate(value)) {
-      showError(input, config.message);
-      return false;
-    }
-
-    clearError(input);
-    return true;
-  }
-
-  /**
-   * Validates the contact form fields and displays user-friendly errors.
-   * @returns {boolean} True when every field passes validation.
+   * Validates every field in the form. Returns true only if all checks pass.
    */
   function validateForm() {
     let isValid = true;
 
     Object.keys(fields).forEach(function (id) {
-      if (!validateField(id)) {
+      const config = fields[id];
+      const input = contactForm.elements[id];
+
+      if (!config || !input) {
+        return;
+      }
+
+      const value = input.value.trim();
+
+      if (config.required && value === "") {
+        showError(input, config.message);
+        isValid = false;
+        return;
+      }
+
+      if (config.minLength && value.length < config.minLength) {
+        showError(input, config.message);
+        isValid = false;
+        return;
+      }
+
+      if (config.validate && !config.validate(value)) {
+        showError(input, config.message);
         isValid = false;
       }
     });
@@ -215,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Sends form data to the PHP handler and handles the server response.
+   * Sends the form to the PHP handler and updates the page based on the response.
    */
   function sendForm() {
     if (submitButton) {
@@ -228,61 +190,38 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then(function (res) {
         return res.text().then(function (text) {
-          return { ok: res.ok, text: text };
-        });
-      })
-      .then(function (result) {
-        if (result.ok && result.text.trim() === "success") {
-          contactForm.reset();
+          const responseText = text.trim();
+
+          if (res.ok && responseText === "success") {
+            contactForm.reset();
+            if (successMessage) {
+              successMessage.textContent =
+                "Thank you for your message. We will get back to you soon!";
+            }
+            if (submitButton) {
+              submitButton.disabled = false;
+            }
+            return;
+          }
 
           if (successMessage) {
             successMessage.textContent =
-              "Thank you for your message. We will get back to you soon!";
+              responseText || "Something went wrong. Please try again.";
           }
-
-          // Reload after a short delay so the user can read the success message
-          setTimeout(function () {
-            window.location.reload();
-          }, 3000);
-          return;
-        }
-
-        if (successMessage) {
-          successMessage.textContent =
-            result.text.trim() || "Something went wrong. Please try again.";
-        }
-
-        if (submitButton) {
-          submitButton.disabled = false;
-        }
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+        });
       })
       .catch(function () {
         if (successMessage) {
           successMessage.textContent = "Server error. Try again later.";
         }
-
         if (submitButton) {
           submitButton.disabled = false;
         }
       });
   }
-
-  // Validate individual fields when the user leaves an input
-  Object.keys(fields).forEach(function (id) {
-    const input = contactForm.elements[id];
-
-    if (!input) {
-      return;
-    }
-
-    input.addEventListener("blur", function () {
-      validateField(id);
-    });
-
-    input.addEventListener("input", function () {
-      clearError(input);
-    });
-  });
 
   contactForm.addEventListener("submit", function (event) {
     event.preventDefault();
