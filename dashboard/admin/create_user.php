@@ -35,11 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errorMessage = 'Select a valid user role.';
     } else {
         try {
-            $stmt = $pdo->prepare(
+            $insertUser = $pdo->prepare(
                 'INSERT INTO users (name, email, password, role)
                  VALUES (:name, :email, :password, :role)'
             );
-            $stmt->execute([
+            $insertUser->execute([
                 'name' => $formData['name'],
                 'email' => $formData['email'],
                 'password' => password_hash($plainPassword, PASSWORD_DEFAULT),

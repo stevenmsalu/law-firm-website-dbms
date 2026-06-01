@@ -48,10 +48,10 @@ function runSeed(PDO $pdo): array
     $lawyerPassword = 'lawyer123';
 
     $seedUsers = [
-        ['label' => 'Admin', 'name' => 'Admin User', 'email' => 'admin@lawfirm.com', 'password' => $adminPassword, 'role' => 'admin'],
-        ['label' => 'Lawyer', 'name' => 'Mwansa Zimba', 'email' => 'mwansa.zimba@lawfirm.com', 'password' => $lawyerPassword, 'role' => 'lawyer'],
-        ['label' => 'Lawyer', 'name' => 'Jessica Zimba', 'email' => 'jessica.zimba@lawfirm.com', 'password' => $lawyerPassword, 'role' => 'lawyer'],
-        ['label' => 'Lawyer', 'name' => 'Bupe Zimba', 'email' => 'bupe.zimba@lawfirm.com', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Admin', 'name' => 'Admin User', 'email' => 'admin@zimbapartners.co.zm', 'password' => $adminPassword, 'role' => 'admin'],
+        ['label' => 'Lawyer', 'name' => 'Mwansa Zimba', 'email' => 'mwansa.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Lawyer', 'name' => 'Jessica Zimba', 'email' => 'jessica.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Lawyer', 'name' => 'Bupe Zimba', 'email' => 'bupe.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
     ];
 
     $results = [];
@@ -102,7 +102,8 @@ function renderSeedResults(array $results): void
     echo '</table>';
 }
 
-// Standalone: open seed.php directly in the browser to re-run demo user seeding.
+// When setup.php includes this file, it sets SEED_FROM_SETUP so we do not
+// output a second HTML page. setup.php calls runSeed() and renders results itself.
 if (!defined('SEED_FROM_SETUP')) {
     header('Content-Type: text/html; charset=UTF-8');
 

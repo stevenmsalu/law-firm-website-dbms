@@ -8,22 +8,33 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-if (!empty($_SESSION['user_id']) && !empty($_SESSION['role'])) {
-    if ($_SESSION['role'] === 'admin') {
+/**
+ * Send the user to the dashboard that matches their role.
+ */
+function redirectToRoleDashboard(string $role): void
+{
+    if ($role === 'admin') {
         header('Location: ' . APP_BASE_PATH . '/dashboard/admin/index.php');
         exit;
     }
-    if ($_SESSION['role'] === 'lawyer') {
+
+    if ($role === 'lawyer') {
         header('Location: ' . APP_BASE_PATH . '/dashboard/lawyer.php');
         exit;
     }
-    if ($_SESSION['role'] === 'client') {
+
+    if ($role === 'client') {
         header('Location: ' . APP_BASE_PATH . '/dashboard/client.php');
         exit;
     }
 }
 
-$error = '';
+// Already logged in — go straight to the correct dashboard.
+if (!empty($_SESSION['user_id']) && !empty($_SESSION['role'])) {
+    redirectToRoleDashboard((string) $_SESSION['role']);
+}
+
+$errorMessage = '';
 $email = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $plainPassword = (string) ($_POST['password'] ?? '');
 
     if ($email === '' || $plainPassword === '') {
-        $error = 'Please enter both email and password.';
+        $errorMessage = 'Please enter both email and password.';
     } else {
         $pdo = require __DIR__ . '/../database/connection.php';
 
@@ -46,24 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role'] = $user['role'];
             $_SESSION['name'] = $user['name'];
 
-            if ($user['role'] === 'admin') {
-                header('Location: ' . APP_BASE_PATH . '/dashboard/admin/index.php');
-                exit;
-            }
-            if ($user['role'] === 'lawyer') {
-                header('Location: ' . APP_BASE_PATH . '/dashboard/lawyer.php');
-                exit;
-            }
-            if ($user['role'] === 'client') {
-                header('Location: ' . APP_BASE_PATH . '/dashboard/client.php');
-                exit;
+            $userRole = (string) $user['role'];
+
+            // Only admin, lawyer, and client accounts can sign in.
+            if (in_array($userRole, ['admin', 'lawyer', 'client'], true)) {
+                redirectToRoleDashboard($userRole);
             }
 
-            $error = 'Invalid user role';
+            $errorMessage = 'Invalid user role';
             session_unset();
             session_destroy();
         } else {
-            $error = 'Invalid credentials';
+            $errorMessage = 'Invalid credentials';
         }
     }
 }
@@ -82,8 +87,8 @@ include '../includes/header.php';
         <h2>Sign In</h2>
         <p>Use the email address and password assigned to your account.</p>
 
-        <?php if ($error !== ''): ?>
-          <p class="form-error"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php if ($errorMessage !== ''): ?>
+          <p class="form-error"><?php echo htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8'); ?></p>
         <?php endif; ?>
 
         <form method="post" action="">

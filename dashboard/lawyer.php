@@ -13,27 +13,30 @@ $authPathPrefix = '../auth/';
 
 $successMessage = '';
 $errorMessage = '';
-$allowedStatuses = ['Open', 'In Progress', 'Closed'];
+$allowedCaseStatuses = ['Open', 'In Progress', 'Closed'];
+$loggedInLawyerId = (int) $_SESSION['user_id'];
 
+// Lawyer updates the status of a case assigned to them.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $caseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
-    $status = trim((string) ($_POST['status'] ?? ''));
+    $caseStatus = trim((string) ($_POST['status'] ?? ''));
 
-    if ($caseId === false || $caseId === null || !in_array($status, $allowedStatuses, true)) {
+    if ($caseId === false || $caseId === null || !in_array($caseStatus, $allowedCaseStatuses, true)) {
         $errorMessage = 'Invalid case update request.';
     } else {
-        $updateStmt = $pdo->prepare(
+        // The WHERE clause ensures only this lawyer's assigned cases can be updated.
+        $updateCase = $pdo->prepare(
             'UPDATE cases
              SET status = :status
              WHERE id = :id AND lawyer_id = :lawyer_id'
         );
-        $updateStmt->execute([
-            'status' => $status,
+        $updateCase->execute([
+            'status' => $caseStatus,
             'id' => $caseId,
-            'lawyer_id' => (int) $_SESSION['user_id'],
+            'lawyer_id' => $loggedInLawyerId,
         ]);
 
-        if ($updateStmt->rowCount() > 0) {
+        if ($updateCase->rowCount() > 0) {
             header('Location: ' . APP_BASE_PATH . '/dashboard/lawyer.php?updated=1');
             exit;
         }
@@ -58,7 +61,7 @@ $stmt = $pdo->prepare(
      WHERE cases.lawyer_id = :lawyer_id
      ORDER BY cases.created_at DESC"
 );
-$stmt->execute(['lawyer_id' => (int) $_SESSION['user_id']]);
+$stmt->execute(['lawyer_id' => $loggedInLawyerId]);
 $cases = $stmt->fetchAll();
 
 include '../includes/header.php';
@@ -117,9 +120,9 @@ include '../includes/header.php';
                       <input type="hidden" name="case_id" value="<?php echo (int) $case['id']; ?>" />
                       <div class="admin-actions">
                         <select name="status" aria-label="Update case status">
-                          <?php foreach ($allowedStatuses as $status): ?>
-                            <option value="<?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $case['status'] === $status ? ' selected' : ''; ?>>
-                              <?php echo htmlspecialchars($status, ENT_QUOTES, 'UTF-8'); ?>
+                          <?php foreach ($allowedCaseStatuses as $statusOption): ?>
+                            <option value="<?php echo htmlspecialchars($statusOption, ENT_QUOTES, 'UTF-8'); ?>"<?php echo $case['status'] === $statusOption ? ' selected' : ''; ?>>
+                              <?php echo htmlspecialchars($statusOption, ENT_QUOTES, 'UTF-8'); ?>
                             </option>
                           <?php endforeach; ?>
                         </select>

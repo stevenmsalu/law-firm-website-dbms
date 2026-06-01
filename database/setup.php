@@ -31,6 +31,7 @@ try {
         throw new RuntimeException('Could not read schema.sql.');
     }
 
+    // Remove SQL comments, then run each statement to create tables.
     $sql = preg_replace('/^\s*--.*$/m', '', $sql);
 
     $pdo = new PDO(
@@ -48,6 +49,8 @@ try {
     }
 
     $pdo = require __DIR__ . '/connection.php';
+
+    // Insert demo admin and lawyer accounts (skips emails that already exist).
     $seedResults = runSeed($pdo);
 
     require_once __DIR__ . '/../config/app.php';

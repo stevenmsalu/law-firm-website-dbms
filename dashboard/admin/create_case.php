@@ -31,21 +31,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $clientId = filter_var($formData['client_id'], FILTER_VALIDATE_INT);
     $lawyerId = filter_var($formData['lawyer_id'], FILTER_VALIDATE_INT);
-    $clientIds = array_map(static fn(array $client): int => (int) $client['id'], $clients);
-    $lawyerIds = array_map(static fn(array $lawyer): int => (int) $lawyer['id'], $lawyers);
+
+    // Build simple lists of valid IDs from the dropdown options.
+    $validClientIds = [];
+    foreach ($clients as $client) {
+        $validClientIds[] = (int) $client['id'];
+    }
+
+    $validLawyerIds = [];
+    foreach ($lawyers as $lawyer) {
+        $validLawyerIds[] = (int) $lawyer['id'];
+    }
 
     if ($formData['title'] === '' || $formData['description'] === '') {
         $errorMessage = 'Title and description are required.';
-    } elseif ($clientId === false || !in_array($clientId, $clientIds, true)) {
+    } elseif ($clientId === false || !in_array($clientId, $validClientIds, true)) {
         $errorMessage = 'Select a valid client.';
-    } elseif ($lawyerId === false || !in_array($lawyerId, $lawyerIds, true)) {
+    } elseif ($lawyerId === false || !in_array($lawyerId, $validLawyerIds, true)) {
         $errorMessage = 'Select a valid lawyer.';
     } else {
-        $stmt = $pdo->prepare(
+        $insertCase = $pdo->prepare(
             "INSERT INTO cases (title, description, status, client_id, lawyer_id)
              VALUES (:title, :description, 'Open', :client_id, :lawyer_id)"
         );
-        $stmt->execute([
+        $insertCase->execute([
             'title' => $formData['title'],
             'description' => $formData['description'],
             'client_id' => $clientId,

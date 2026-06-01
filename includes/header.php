@@ -25,6 +25,20 @@ $cssVersion = file_exists($cssFile) ? (string) filemtime($cssFile) : '1';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Pick the dashboard link that matches the logged-in user's role.
+$dashboardLink = '';
+$userRole = (string) ($_SESSION['role'] ?? '');
+
+if (!empty($_SESSION['user_id']) && $userRole !== '') {
+    if ($userRole === 'admin') {
+        $dashboardLink = $assetPathPrefix . 'dashboard/admin/index.php';
+    } elseif ($userRole === 'lawyer') {
+        $dashboardLink = $assetPathPrefix . 'dashboard/lawyer.php';
+    } elseif ($userRole === 'client') {
+        $dashboardLink = $assetPathPrefix . 'dashboard/client.php';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en"<?php echo $htmlClass !== '' ? ' class="' . htmlspecialchars($htmlClass, ENT_QUOTES, 'UTF-8') . '"' : ''; ?>>
@@ -71,18 +85,7 @@ if (session_status() === PHP_SESSION_NONE) {
                     ?>
                   </button>
                   <ul class="dropdown-menu">
-                    <li><a href="<?php 
-                      // Determine dashboard link based on role
-                      $dashboardLink = '';
-                      if ($_SESSION['role'] === 'admin') {
-                        $dashboardLink = $assetPathPrefix . 'dashboard/admin/index.php';
-                      } elseif ($_SESSION['role'] === 'lawyer') {
-                        $dashboardLink = $assetPathPrefix . 'dashboard/lawyer.php';
-                      } elseif ($_SESSION['role'] === 'client') {
-                        $dashboardLink = $assetPathPrefix . 'dashboard/client.php';
-                      }
-                      echo htmlspecialchars($dashboardLink, ENT_QUOTES, 'UTF-8');
-                    ?>">Dashboard</a></li>
+                    <li><a href="<?php echo htmlspecialchars($dashboardLink, ENT_QUOTES, 'UTF-8'); ?>">Dashboard</a></li>
                     <li><a href="<?php echo htmlspecialchars($authPathPrefix, ENT_QUOTES, 'UTF-8'); ?>logout.php">Logout</a></li>
                   </ul>
                 </div>

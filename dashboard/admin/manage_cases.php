@@ -13,14 +13,15 @@ $authPathPrefix = '../../auth/';
 
 $successMessage = '';
 
+// Admin-only: delete a case from the Manage Cases page.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $caseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
 
     if ($caseId !== false && $caseId !== null) {
-        $deleteStmt = $pdo->prepare('DELETE FROM cases WHERE id = :id');
-        $deleteStmt->execute(['id' => $caseId]);
+        $deleteCase = $pdo->prepare('DELETE FROM cases WHERE id = :id');
+        $deleteCase->execute(['id' => $caseId]);
 
-        if ($deleteStmt->rowCount() > 0) {
+        if ($deleteCase->rowCount() > 0) {
             header('Location: ' . APP_BASE_PATH . '/dashboard/admin/manage_cases.php?deleted=1');
             exit;
         }
