@@ -49,9 +49,9 @@ function runSeed(PDO $pdo): array
 
     $seedUsers = [
         ['label' => 'Admin', 'name' => 'Admin User', 'email' => 'admin@zimbapartners.co.zm', 'password' => $adminPassword, 'role' => 'admin'],
-        ['label' => 'Lawyer', 'name' => 'Mwansa Zimba', 'email' => 'mwansa.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
-        ['label' => 'Lawyer', 'name' => 'Jessica Zimba', 'email' => 'jessica.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
-        ['label' => 'Lawyer', 'name' => 'Bupe Zimba', 'email' => 'bupe.zimba@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Lawyer', 'name' => 'Mwansa Zimba', 'email' => 'mwansa@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Lawyer', 'name' => 'Jessica Zimba', 'email' => 'jessica@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
+        ['label' => 'Lawyer', 'name' => 'Bupe Zimba', 'email' => 'bupe@zimbapartners.co.zm', 'password' => $lawyerPassword, 'role' => 'lawyer'],
     ];
 
     $results = [];
