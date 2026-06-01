@@ -1,6 +1,6 @@
 # Zimba & Partners — Law Firm Website (DBMS)
 
-PHP/MySQL law firm website with public pages, contact form, authentication, and case messaging.
+PHP/MySQL law firm website with public pages, contact form, authentication, and case management.
 
 ## Quick start (XAMPP)
 
@@ -26,6 +26,23 @@ PHP/MySQL law firm website with public pages, contact form, authentication, and 
 | Password | `admin123`            |
 
 Login: **http://localhost/law-firm-website-dbms/auth/login.php**
+
+## Presentation demo flow
+
+1. Visitor submits the contact form (`public/contact.php`)
+2. Admin views enquiries (`dashboard/admin/contact_messages.php`)
+3. Admin creates client (and lawyer) accounts (`dashboard/admin/create_user.php`)
+4. Admin creates a case and assigns client + lawyer (`dashboard/admin/create_case.php`)
+5. Lawyer updates case status (`dashboard/lawyer.php`)
+6. Admin deletes a case (`dashboard/admin/manage_cases.php`)
+
+## Database tables
+
+| Table     | Purpose                                      |
+|-----------|----------------------------------------------|
+| `users`   | Admin, lawyer, and client accounts           |
+| `contacts`| Public contact form submissions              |
+| `cases`   | Legal matters with client/lawyer assignment  |
 
 ## Project layout
 
@@ -58,7 +75,3 @@ $pdo = require __DIR__ . '/../database/connection.php';
 ```
 
 (Adjust `../` based on how deep the PHP file is in the folder tree.)
-
-## Runtime folder (not committed)
-
-- `uploads/` — case message attachments (created automatically when needed)

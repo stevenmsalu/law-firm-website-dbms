@@ -11,6 +11,26 @@ $assetPathPrefix = '../../';
 $publicPathPrefix = '../../public/';
 $authPathPrefix = '../../auth/';
 
+$successMessage = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $caseId = filter_input(INPUT_POST, 'case_id', FILTER_VALIDATE_INT);
+
+    if ($caseId !== false && $caseId !== null) {
+        $deleteStmt = $pdo->prepare('DELETE FROM cases WHERE id = :id');
+        $deleteStmt->execute(['id' => $caseId]);
+
+        if ($deleteStmt->rowCount() > 0) {
+            header('Location: ' . APP_BASE_PATH . '/dashboard/admin/manage_cases.php?deleted=1');
+            exit;
+        }
+    }
+}
+
+if (isset($_GET['deleted']) && $_GET['deleted'] === '1') {
+    $successMessage = 'Case deleted successfully.';
+}
+
 $stmt = $pdo->query(
     "SELECT
         cases.id,
@@ -48,6 +68,10 @@ include '../../includes/header.php';
         <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/index.php">Back to Dashboard</a>
       </div>
 
+      <?php if ($successMessage !== ''): ?>
+        <p class="form-success"><?php echo htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+      <?php endif; ?>
+
       <?php if (empty($cases)): ?>
         <div class="empty-state">
           No cases have been created yet.
@@ -62,7 +86,7 @@ include '../../includes/header.php';
                 <th>Lawyer Name</th>
                 <th>Status</th>
                 <th>Created Date</th>
-                <th>Details</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -73,7 +97,15 @@ include '../../includes/header.php';
                   <td><?php echo htmlspecialchars((string) ($case['lawyer_name'] ?? 'Unassigned'), ENT_QUOTES, 'UTF-8'); ?></td>
                   <td><span class="status-pill"><?php echo htmlspecialchars($case['status'], ENT_QUOTES, 'UTF-8'); ?></span></td>
                   <td><?php echo htmlspecialchars(date('M d, Y', strtotime((string) $case['created_at'])), ENT_QUOTES, 'UTF-8'); ?></td>
-                  <td><a class="card-link" href="<?php echo APP_BASE_PATH; ?>/dashboard/case.php?id=<?php echo (int) $case['id']; ?>&amp;view=summary">View</a></td>
+                  <td>
+                    <div class="admin-actions">
+                      <a class="card-link" href="<?php echo APP_BASE_PATH; ?>/dashboard/case.php?id=<?php echo (int) $case['id']; ?>">View</a>
+                      <form method="post" action="" onsubmit="return confirm('Delete this case permanently?');">
+                        <input type="hidden" name="case_id" value="<?php echo (int) $case['id']; ?>" />
+                        <button type="submit" class="btn btn-small btn-outline">Delete</button>
+                      </form>
+                    </div>
+                  </td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

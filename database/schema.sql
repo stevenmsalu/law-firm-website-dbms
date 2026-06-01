@@ -5,6 +5,8 @@ CREATE DATABASE IF NOT EXISTS law_firm_db
 
 USE law_firm_db;
 
+DROP TABLE IF EXISTS messages;
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -30,22 +32,6 @@ CREATE TABLE IF NOT EXISTS cases (
     CONSTRAINT fk_cases_lawyer
     FOREIGN KEY (lawyer_id) REFERENCES users(id)
     ON DELETE SET NULL ON UPDATE CASCADE
-    ) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS messages (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    case_id INT NOT NULL,
-    sender_id INT NOT NULL,
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX idx_messages_case_id (case_id),
-    INDEX idx_messages_sender_id (sender_id),
-    CONSTRAINT fk_messages_case
-    FOREIGN KEY (case_id) REFERENCES cases(id)
-    ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT fk_messages_sender
-    FOREIGN KEY (sender_id) REFERENCES users(id)
-    ON DELETE CASCADE ON UPDATE CASCADE
     ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS contacts (

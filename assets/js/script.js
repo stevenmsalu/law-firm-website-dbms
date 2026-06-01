@@ -54,15 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* =========================
-     Case Message Thread
-     ========================= */
-  const messageThread = document.querySelector(".message-thread");
-
-  if (messageThread) {
-    messageThread.scrollTop = messageThread.scrollHeight;
-  }
-
-  /* =========================
      Contact Form
      ========================= */
   const contactForm = document.getElementById("contact-form");

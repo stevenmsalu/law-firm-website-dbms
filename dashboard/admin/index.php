@@ -49,7 +49,6 @@ include '../../includes/header.php';
                         <a class="btn" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/create_user.php">Create User</a>
                         <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/create_case.php">Create Case</a>
                         <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/manage_cases.php">Manage Cases</a>
-                        <!-- ➕ STEP 5 — Added View Contacts button -->
                         <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/dashboard/admin/contact_messages.php">View Contacts</a>
                         <a class="btn btn-outline" href="<?php echo APP_BASE_PATH; ?>/auth/logout.php">Logout</a>
                     </div>
